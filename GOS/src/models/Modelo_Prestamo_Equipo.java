@@ -8,14 +8,16 @@ public class Modelo_Prestamo_Equipo {
 	private int IDPRESTAMOEQUIPO;
 	private int IDUSUARIO;
 	private int IDEQUIPO;
-	private Calendar FECHA;
+	private Calendar FECHA_INICIO;
+	private Calendar FECHA_FIN;
 	
-	public Modelo_Prestamo_Equipo(int iDPRESTAMOEQUIPO, int iDUSUARIO, int iDEQUIPO, Calendar fecha) {
+	public Modelo_Prestamo_Equipo(int iDPRESTAMOEQUIPO, int iDUSUARIO, int iDEQUIPO, Calendar FECHA_INICIO, Calendar FECHA_FIN) {
 		super();
-		IDPRESTAMOEQUIPO = iDPRESTAMOEQUIPO;
-		IDUSUARIO = iDUSUARIO;
-		IDEQUIPO = iDEQUIPO;
-		FECHA = fecha;
+		this.IDPRESTAMOEQUIPO = iDPRESTAMOEQUIPO;
+		this.IDUSUARIO = iDUSUARIO;
+		this.IDEQUIPO = iDEQUIPO;
+		this.FECHA_INICIO = FECHA_INICIO;
+		this.FECHA_FIN = FECHA_FIN;
 	}
 
 	public int getIDPRESTAMOEQUIPO() {
@@ -42,13 +44,23 @@ public class Modelo_Prestamo_Equipo {
 		IDEQUIPO = iDEQUIPO;
 	}
 
-	public Calendar getFECHA() {
-		return FECHA;
+	public Calendar getFECHA_INICIO() {
+		return FECHA_INICIO;
 	}
 
-	public void setFECHA(Calendar fECHA) {
-		FECHA = fECHA;
+	public void setFECHA_INICIO(Calendar fECHA_INICIO) {
+		FECHA_INICIO = fECHA_INICIO;
 	}
+
+	public Calendar getFECHA_FIN() {
+		return FECHA_FIN;
+	}
+
+	public void setFECHA_FIN(Calendar fECHA_FIN) {
+		FECHA_FIN = fECHA_FIN;
+	}
+	
+	
 	
 	
 	

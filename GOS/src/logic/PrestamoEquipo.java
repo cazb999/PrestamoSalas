@@ -27,19 +27,28 @@ public class PrestamoEquipo {
 		boolean save = false;
 
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
-			int year       = prestamo.getFECHA().get(Calendar.YEAR);
-			int month      = prestamo.getFECHA().get(Calendar.MONTH); // Jan = 0, dec = 11
-			int dayOfMonth = prestamo.getFECHA().get(Calendar.DAY_OF_MONTH);
-			int hourOfDay  = prestamo.getFECHA().get(Calendar.HOUR_OF_DAY); // 24 hour clock
-			int minute     = prestamo.getFECHA().get(Calendar.MINUTE);
+			// Fecha de inicio prestamo
+			int yearInicio       = prestamo.getFECHA_INICIO().get(Calendar.YEAR);
+			int monthInicio     = prestamo.getFECHA_INICIO().get(Calendar.MONTH); // Jan = 0, dec = 11
+			int dayOfMonthInicio = prestamo.getFECHA_INICIO().get(Calendar.DAY_OF_MONTH);
+			int hourOfDayInicio  = prestamo.getFECHA_INICIO().get(Calendar.HOUR_OF_DAY); // 24 hour clock
+			int minuteInicio     = prestamo.getFECHA_INICIO().get(Calendar.MINUTE);
+			
+			// Fehca de fin prestamo
+			int yearFin       = prestamo.getFECHA_FIN().get(Calendar.YEAR);
+			int monthFin     = prestamo.getFECHA_FIN().get(Calendar.MONTH); // Jan = 0, dec = 11
+			int dayOfMonthFin = prestamo.getFECHA_FIN().get(Calendar.DAY_OF_MONTH);
+			int hourOfDayFin  = prestamo.getFECHA_FIN().get(Calendar.HOUR_OF_DAY); // 24 hour clock
+			int minuteFin     = prestamo.getFECHA_FIN().get(Calendar.MINUTE);
+			
 			con = conexion.getConnection();
-			ps = con.prepareStatement("insert into prestamoequipo (IDUSUARIO, IDEQUIPO, DIAPRESTAMOSALA, HORAINICIO, HORAFIN) values (?,?,?,?,?)");
+			ps = con.prepareStatement("insert into prestamoequipo (IDUSUARIO, IDEQUIPO, DIAPRESTAMOEQUIPO, HORAINICIO, HORAFIN, DIADEVOLUCIONEQUIPO) values (?,?,?,?,?,?)");
 			ps.setInt(1, prestamo.getIDUSUARIO());
 			ps.setInt(2, prestamo.getIDEQUIPO());
-			ps.setDate(3,(Date) prestamo.getDIAPRESTAMOSALA());
-			ps.setTime(4, prestamo.getHORAINICIO());
-			ps.setTime(5, prestamo.getHORAFIN());
+			ps.setString(3, yearInicio+"-"+monthInicio+"-"+dayOfMonthInicio+"");
+			ps.setString(4, hourOfDayInicio+"-"+minuteInicio+"");
+			ps.setString(5,hourOfDayFin+"-"+minuteFin+"");
+			ps.setString(6, yearFin+"-"+monthFin+"-"+dayOfMonthFin+"");
 
 			int res = ps.executeUpdate();
 
@@ -57,16 +66,15 @@ public class PrestamoEquipo {
 		return save;
 	}
 
-	private boolean eliminarPrestamoEquipo(int idUsuario, int codigoEquipo) {
+	private boolean eliminarPrestamoEquipo(int idPrestamoEquipo) {
 		Connection con = null;
 		boolean eliminado = false;
 
 		try {
 
 			con = conexion.getConnection();
-			ps = con.prepareStatement("DELETE FROM prestamoequipo WHERE IDUSUARIO=? and IDEQUIPO=?");
-			ps.setInt(1, idUsuario);
-			ps.setInt(2, codigoEquipo);
+			ps = con.prepareStatement("DELETE FROM prestamoequipo WHERE IDPRESTAMOEQUIPO=?");
+			ps.setInt(1, idPrestamoEquipo);
 
 			int res = ps.executeUpdate();
 
@@ -98,11 +106,12 @@ public class PrestamoEquipo {
 			while (rs.next()) {
 				Modelo_Prestamo_Equipo prestamoEquipo = new Modelo_Prestamo_Equipo(
 						rs.getInt("IDPRESTAMOEQUIPO"),
-						rs.getInt("IDUSUARIO"),
-						rs.getInt("IDEQUIPO"),
-						rs.getDate("DIAPRESTAMOSALA"),
-						rs.getTime("HORAINICIO"),
-						rs.getTime("HORAFIN")
+						rs.getInt("IDUSUARIO");
+						rs.getInt("IDEQUIPO");
+						rs.getString("DIAPRESTAMOEQUIPO");
+						rs.getString("HORAINICIO");
+						rs.getString("HORAFIN");
+						rs.getString("DIADEVOLUCIONEQUIPO");
 						);
 				
 				prestamosEquipo.add(prestamoEquipo);
