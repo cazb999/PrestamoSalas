@@ -122,7 +122,7 @@ public class Tipo {
 
 		Tipo t = new Tipo();
 		// agregar carrera
-		if (t.crearTipo("Administrativo")) {
+		if (t.crearTipo("Admin")) {
 			System.out.println("Se registro correctamente");
 		} else {
 			System.out.println("Ocurrió un error");

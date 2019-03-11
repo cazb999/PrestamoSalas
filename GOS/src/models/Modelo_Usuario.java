@@ -8,9 +8,11 @@ public class Modelo_Usuario {
 	private int CODIGOUSUARIO;
 	private String NOMBREUSUARIO;
 	private String APELLIDOUSUARIO;
+	private String CORREO;
+	private String CONTRASENA;
 	
 	public Modelo_Usuario(int IDUSUARIO, int IDCARRERA, int IDTIPO, int CODIGOUSUARIO, String NOMBREUSUARIO,
-			String APELLIDOUSUARIO) {
+			String APELLIDOUSUARIO, String CORREO, String CONTRASENA) {
 		super();
 		this.IDUSUARIO = IDUSUARIO;
 		this.IDCARRERA = IDCARRERA;
@@ -18,6 +20,8 @@ public class Modelo_Usuario {
 		this.CODIGOUSUARIO = CODIGOUSUARIO;
 		this.NOMBREUSUARIO = NOMBREUSUARIO;
 		this.APELLIDOUSUARIO = APELLIDOUSUARIO;
+		this.CORREO = CORREO;
+		this.CONTRASENA = CONTRASENA;
 	}
 	
 	public int getIDUSUARIO() {
@@ -55,6 +59,22 @@ public class Modelo_Usuario {
 	}
 	public void setAPELLIDOUSUARIO(String aPELLIDOUSUARIO) {
 		APELLIDOUSUARIO = aPELLIDOUSUARIO;
+	}
+
+	public String getCORREO() {
+		return CORREO;
+	}
+
+	public void setCORREO(String cORREO) {
+		CORREO = cORREO;
+	}
+
+	public String getCONTRASENA() {
+		return CONTRASENA;
+	}
+
+	public void setCONTRASENA(String cONTRASENA) {
+		CONTRASENA = cONTRASENA;
 	}
 	
 	

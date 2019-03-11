@@ -7,6 +7,9 @@ import java.awt.Image;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.Login_Controller;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -90,5 +93,33 @@ public class Login extends JFrame {
 		txtContrasena.setFont(new Font("Arial", Font.PLAIN, 25));
 		txtContrasena.setBounds(460, 275, 200, 35);
 		contentPane.add(txtContrasena);
+		
+		btnLogin.addActionListener(new Login_Controller(this));
 	}
+	
+	public JTextField getTxtUsuario() {
+		return txtUsuario;
+	}
+
+	public void setTxtUsuario(JTextField txtUsuario) {
+		this.txtUsuario = txtUsuario;
+	}
+
+	public JPasswordField getTxtContrasena() {
+		return txtContrasena;
+	}
+
+	public void setTxtContrasena(JPasswordField txtContrasena) {
+		this.txtContrasena = txtContrasena;
+	}
+
+	public JButton getBtnLogin() {
+		return btnLogin;
+	}
+
+	public void setBtnLogin(JButton btnLogin) {
+		this.btnLogin = btnLogin;
+	}
+	
+	
 }

@@ -17,19 +17,21 @@ public class Usuario {
 		// TODO Auto-generated constructor stub
 	}
 
-	private boolean crearUsuario(Modelo_Usuario usuario) {
+	public boolean crearUsuario(Modelo_Usuario usuario) {
 		Connection con = null;
 		boolean save = false;
 
 		try {
 
 			con = conexion.getConnection();
-			ps = con.prepareStatement("insert into usuario (IDCARRERA, IDTIPO, CODIGOUSUARIO, NOMBREUSUARIO, APELLIDOUSUARIO) values (?,?,?,?,?)");
+			ps = con.prepareStatement("insert into usuario (IDCARRERA, IDTIPO, CODIGOUSUARIO, NOMBREUSUARIO, APELLIDOUSUARIO, CORREO, CONTRASENA) values (?,?,?,?,?,?,?)");
 			ps.setInt(1, usuario.getIDCARRERA());
 			ps.setInt(2, usuario.getIDTIPO());
 			ps.setInt(3, usuario.getCODIGOUSUARIO());
 			ps.setString(4, usuario.getNOMBREUSUARIO());
 			ps.setString(5, usuario.getAPELLIDOUSUARIO());
+			ps.setString(6, usuario.getCORREO());
+			ps.setString(7, usuario.getCONTRASENA());
 
 			int res = ps.executeUpdate();
 
@@ -47,7 +49,7 @@ public class Usuario {
 		return save;
 	}
 
-	private boolean eliminarUsuario(int codigoUsuario) {
+	public boolean eliminarUsuario(int codigoUsuario) {
 		Connection con = null;
 		boolean eliminado = false;
 
@@ -73,7 +75,7 @@ public class Usuario {
 		return eliminado;
 	}
 
-	private ArrayList<Modelo_Usuario> obtenerUsuarios() {		
+	public ArrayList<Modelo_Usuario> obtenerUsuarios() {		
 		ArrayList<Modelo_Usuario> usuarios = new ArrayList<Modelo_Usuario>();
 		Connection con = null;
 
@@ -91,7 +93,9 @@ public class Usuario {
 						rs.getInt("IDTIPO"),
 						rs.getInt("CODIGOUSUARIO"),
 						rs.getString("NOMBREUSUARIO"),
-						rs.getString("APELLIDOUSUARIO")
+						rs.getString("APELLIDOUSUARIO"),
+						rs.getString("CORREO"),
+						rs.getString("CONTRASENA")
 						);
 				
 				usuarios.add(usuario);
@@ -104,7 +108,7 @@ public class Usuario {
 		return usuarios;
 	}
 
-	private Modelo_Usuario obtenerUsuario(int codigoUsuario) {
+	public Modelo_Usuario obtenerUsuario(int codigoUsuario) {
 		Connection con = null;
 		Modelo_Usuario usuario = null;
 
@@ -123,7 +127,9 @@ public class Usuario {
 						rs.getInt("IDTIPO"),
 						rs.getInt("CODIGOUSUARIO"),
 						rs.getString("NOMBREUSUARIO"),
-						rs.getString("APELLIDOUSUARIO")
+						rs.getString("APELLIDOUSUARIO"),
+						rs.getString("CORREO"),
+						rs.getString("CONTRASENA")
 						);
 			} else {
 				usuario=null;
@@ -140,7 +146,7 @@ public class Usuario {
 
 		Usuario u = new Usuario();
 		// agregar usuario
-		if (u.crearUsuario(new Modelo_Usuario(0, 2, 1, 201320556, "Jose", "Jose"))) {
+		if (u.crearUsuario(new Modelo_Usuario(0, 1, 4, 201320556, "Carlos", "Zambrano","carlos.zambrano@uptc.edu.co","1234"))) {
 			System.out.println("Se registro correctamente");
 		} else {
 			System.out.println("Ocurrió un error");
