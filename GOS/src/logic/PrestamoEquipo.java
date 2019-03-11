@@ -1,7 +1,8 @@
 package logic;
 
+import java.awt.Window.Type;
 import java.sql.Connection;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Time;
@@ -33,6 +34,7 @@ public class PrestamoEquipo {
 			int dayOfMonthInicio = prestamo.getFECHA_INICIO().get(Calendar.DAY_OF_MONTH);
 			int hourOfDayInicio  = prestamo.getFECHA_INICIO().get(Calendar.HOUR_OF_DAY); // 24 hour clock
 			int minuteInicio     = prestamo.getFECHA_INICIO().get(Calendar.MINUTE);
+			int secondInicio    = prestamo.getFECHA_INICIO().get(Calendar.SECOND);
 			
 			// Fehca de fin prestamo
 			int yearFin       = prestamo.getFECHA_FIN().get(Calendar.YEAR);
@@ -40,14 +42,15 @@ public class PrestamoEquipo {
 			int dayOfMonthFin = prestamo.getFECHA_FIN().get(Calendar.DAY_OF_MONTH);
 			int hourOfDayFin  = prestamo.getFECHA_FIN().get(Calendar.HOUR_OF_DAY); // 24 hour clock
 			int minuteFin     = prestamo.getFECHA_FIN().get(Calendar.MINUTE);
+			int secondFin    = prestamo.getFECHA_FIN().get(Calendar.SECOND);
 			
 			con = conexion.getConnection();
 			ps = con.prepareStatement("insert into prestamoequipo (IDUSUARIO, IDEQUIPO, DIAPRESTAMOEQUIPO, HORAINICIO, HORAFIN, DIADEVOLUCIONEQUIPO) values (?,?,?,?,?,?)");
 			ps.setInt(1, prestamo.getIDUSUARIO());
 			ps.setInt(2, prestamo.getIDEQUIPO());
 			ps.setString(3, yearInicio+"-"+monthInicio+"-"+dayOfMonthInicio+"");
-			ps.setString(4, hourOfDayInicio+"-"+minuteInicio+"");
-			ps.setString(5,hourOfDayFin+"-"+minuteFin+"");
+			ps.setString(4, hourOfDayInicio+":"+minuteInicio+":"+secondInicio);
+			ps.setString(5,hourOfDayFin+":"+minuteFin+":"+secondFin);
 			ps.setString(6, yearFin+"-"+monthFin+"-"+dayOfMonthFin+"");
 
 			int res = ps.executeUpdate();
@@ -92,9 +95,10 @@ public class PrestamoEquipo {
 		return eliminado;
 	}
 
-	private ArrayList<Modelo_Prestamo_Equipo> obtenerPrestamosEquipo() {		
+	private ArrayList<Modelo_Prestamo_Equipo> obtenerPrestamosEquipo() {
 		ArrayList<Modelo_Prestamo_Equipo> prestamosEquipo = new ArrayList<Modelo_Prestamo_Equipo>();
 		Connection con = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 		try {
 
@@ -104,14 +108,21 @@ public class PrestamoEquipo {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
+				Date date_inicio = sdf.parse(rs.getString("DIAPRESTAMOEQUIPO")+" "+rs.getString("HORAINICIO"));
+				Date date_fin = sdf.parse(rs.getString("DIADEVOLUCIONEQUIPO")+" "+rs.getString("HORAFIN"));
+				
+				Calendar calendar_inicio = Calendar.getInstance();
+				calendar_inicio.setTime(date_inicio);
+				
+				Calendar calendar_fin = Calendar.getInstance();
+				calendar_fin.setTime(date_fin);
+				
 				Modelo_Prestamo_Equipo prestamoEquipo = new Modelo_Prestamo_Equipo(
 						rs.getInt("IDPRESTAMOEQUIPO"),
-						rs.getInt("IDUSUARIO");
-						rs.getInt("IDEQUIPO");
-						rs.getString("DIAPRESTAMOEQUIPO");
-						rs.getString("HORAINICIO");
-						rs.getString("HORAFIN");
-						rs.getString("DIADEVOLUCIONEQUIPO");
+						rs.getInt("IDUSUARIO"),
+						rs.getInt("IDEQUIPO"),
+						calendar_inicio,
+						calendar_fin
 						);
 				
 				prestamosEquipo.add(prestamoEquipo);
@@ -124,27 +135,35 @@ public class PrestamoEquipo {
 		return prestamosEquipo;
 	}
 
-	private Modelo_Prestamo_Equipo obtenerPrestamoEquipo(int idUsuario, int idEquipo) {
+	private Modelo_Prestamo_Equipo obtenerPrestamoEquipo(int idPrestamoEquipo) {
 		Connection con = null;
 		Modelo_Prestamo_Equipo prestamoEquipo = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 		try {
 
 			con = conexion.getConnection();
-			ps = con.prepareStatement("SELECT * FROM prestamoequipo WHERE IDUSUARIO = ? and IDEQUIPO = ?");
-			ps.setInt(1, idUsuario);
-			ps.setInt(2, idEquipo);
+			ps = con.prepareStatement("SELECT * FROM prestamoequipo WHERE IDPRESTAMOEQUIPO = ?");
+			ps.setInt(1, idPrestamoEquipo);
 
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
+				Date date_inicio = sdf.parse(rs.getString("DIAPRESTAMOEQUIPO")+" "+rs.getString("HORAINICIO"));
+				Date date_fin = sdf.parse(rs.getString("DIADEVOLUCIONEQUIPO")+" "+rs.getString("HORAFIN"));
+				
+				Calendar calendar_inicio = Calendar.getInstance();
+				calendar_inicio.setTime(date_inicio);
+				
+				Calendar calendar_fin = Calendar.getInstance();
+				calendar_fin.setTime(date_fin);
+				
 				prestamoEquipo = new Modelo_Prestamo_Equipo(
 						rs.getInt("IDPRESTAMOEQUIPO"),
 						rs.getInt("IDUSUARIO"),
 						rs.getInt("IDEQUIPO"),
-						rs.getDate("DIAPRESTAMOSALA"),
-						rs.getTime("HORAINICIO"),
-						rs.getTime("HORAFIN")
+						calendar_inicio,
+						calendar_fin
 						);
 			} else {
 				prestamoEquipo=null;
@@ -160,34 +179,34 @@ public class PrestamoEquipo {
 	public static void main(String[] args) {
 
 		PrestamoEquipo pe = new PrestamoEquipo();
-		// agregar usuario
+		// agregar prestamo equipo
 		// Jan = 0, dec = 11
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd");	
-		Calendar calendar = new GregorianCalendar(2019,04,27);
-		System.out.println(sdf.format(calendar.getTime()));
-		if (pe.crearPrestamoEquipo(new Modelo_Prestamo_Equipo(0, 1, 1, calendar, new Time(12, 00, 00), new Time(14, 00, 00)))) {
-			System.out.println("Se registro correctamente el prestamo");
-		} else {
-			System.out.println("Ocurrió un error");
-		}
-		
-//		// buscar USUARIO
-//		Modelo_Usuario usuario = u.obtenerUsuario(201322123);
-//		System.out.println("ID "+usuario.getIDUSUARIO());
-//		System.out.println("ID Carrera "+usuario.getIDCARRERA());
-//		System.out.println("ID Tipo"+usuario.getIDTIPO());
-//		System.out.println("Codigo "+usuario.getCODIGOUSUARIO());
-//		System.out.println("Nombre "+usuario.getNOMBREUSUARIO());
-//		System.out.println("Apellido "+usuario.getAPELLIDOUSUARIO());
-		
-		//obtener todos los usuarios
-//		ArrayList<Modelo_Usuario> usuarios = u.obtenerUsuarios();
-//		for (int i = 0; i < usuarios.size(); i++) {
-//			System.out.println("Codigo = "+usuarios.get(i).getCODIGOUSUARIO()+" Nombre = "+usuarios.get(i).getNOMBREUSUARIO());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd hh:mm:ss");
+//		Calendar calendar_inicio = new GregorianCalendar(2019,03,12,14,0,0);
+//		Calendar calendar_fin = new GregorianCalendar(2019,03,12,16,0,0);
+//		
+//		if (pe.crearPrestamoEquipo(new Modelo_Prestamo_Equipo(0, 2, 2, calendar_inicio, calendar_fin))) {
+//			System.out.println("Se registro correctamente el prestamo");
+//		} else {
+//			System.out.println("Ocurrió un error");
 //		}
 		
+//		// buscar Prestamo Equipo
+//		Modelo_Prestamo_Equipo prestamo = pe.obtenerPrestamoEquipo(3);
+//		System.out.println("ID "+prestamo.getIDPRESTAMOEQUIPO());
+//		System.out.println("ID Usuario "+prestamo.getIDUSUARIO());
+//		System.out.println("ID Equipo "+prestamo.getIDEQUIPO());
+//		System.out.println("Fecha inicio "+sdf.format(prestamo.getFECHA_INICIO().getTime()));
+//		System.out.println("fecha fin "+sdf.format(prestamo.getFECHA_FIN().getTime()));
+		
+		//obtener todos los usuarios
+		ArrayList<Modelo_Prestamo_Equipo> prestamos = pe.obtenerPrestamosEquipo();
+		for (int i = 0; i < prestamos.size(); i++) {
+			System.out.println("ID = "+prestamos.get(i).getIDPRESTAMOEQUIPO()+" Fecha Inicio = "+sdf.format(prestamos.get(i).getFECHA_INICIO().getTime())+" Fecha Fin = "+sdf.format(prestamos.get(i).getFECHA_FIN().getTime()));
+		}
+//		
 		//eliminar carrera
-//		if (u.eliminarUsuario(201322123)) {
+//		if (pe.eliminarPrestamoEquipo(3)) {
 //			System.out.println("Se eliminó correctamente");
 //		} else {
 //			System.out.println("Ocurrió un error");

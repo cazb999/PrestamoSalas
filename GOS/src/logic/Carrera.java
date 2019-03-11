@@ -121,11 +121,11 @@ public class Carrera {
 
 		Carrera c = new Carrera();
 		// agregar carrera
-//		if (c.crearCarrera("Ing Industrial")) {
-//			System.out.println("Se registro correctamente");
-//		} else {
-//			System.out.println("Ocurrió un error");
-//		}
+		if (c.crearCarrera("Ing Minas")) {
+			System.out.println("Se registro correctamente");
+		} else {
+			System.out.println("Ocurrió un error");
+		}
 		
 //		// buscar carrera
 //		String[] carrera = c.obtenerCarrera("Ing Minas");
@@ -133,10 +133,10 @@ public class Carrera {
 //		System.out.println(carrera[1]);
 		
 		//obtener todas las carreras
-		ArrayList<String[]> carreras = c.obtenerCarreras();
-		for (int i = 0; i < carreras.size(); i++) {
-			System.out.println("id = "+carreras.get(i)[0]+" nombre = "+carreras.get(i)[1]);
-		}
+//		ArrayList<String[]> carreras = c.obtenerCarreras();
+//		for (int i = 0; i < carreras.size(); i++) {
+//			System.out.println("id = "+carreras.get(i)[0]+" nombre = "+carreras.get(i)[1]);
+//		}
 		
 		//eliminar carrera
 //		if (c.eliminarCarrera("Ing Industrial")) {

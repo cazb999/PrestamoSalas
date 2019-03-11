@@ -12,7 +12,6 @@ public class Modelo_Prestamo_Equipo {
 	private Calendar FECHA_FIN;
 	
 	public Modelo_Prestamo_Equipo(int iDPRESTAMOEQUIPO, int iDUSUARIO, int iDEQUIPO, Calendar FECHA_INICIO, Calendar FECHA_FIN) {
-		super();
 		this.IDPRESTAMOEQUIPO = iDPRESTAMOEQUIPO;
 		this.IDUSUARIO = iDUSUARIO;
 		this.IDEQUIPO = iDEQUIPO;

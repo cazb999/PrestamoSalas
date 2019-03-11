@@ -122,11 +122,11 @@ public class Tipo {
 
 		Tipo t = new Tipo();
 		// agregar carrera
-//		if (t.crearTipo("Administrativo")) {
-//			System.out.println("Se registro correctamente");
-//		} else {
-//			System.out.println("Ocurrió un error");
-//		}
+		if (t.crearTipo("Administrativo")) {
+			System.out.println("Se registro correctamente");
+		} else {
+			System.out.println("Ocurrió un error");
+		}
 		
 //		// buscar carrera
 //		String[] tipo = t.obtenerTipo("Administrativo");
@@ -134,11 +134,11 @@ public class Tipo {
 //		System.out.println(tipo[1]);
 		
 		//obtener todas las carreras
-		ArrayList<String[]> tipos = t.obtenerTipos();
-		for (int i = 0; i < tipos.size(); i++) {
-			System.out.println("id = "+tipos.get(i)[0]+" nombre = "+tipos.get(i)[1]);
-		}
-		
+//		ArrayList<String[]> tipos = t.obtenerTipos();
+//		for (int i = 0; i < tipos.size(); i++) {
+//			System.out.println("id = "+tipos.get(i)[0]+" nombre = "+tipos.get(i)[1]);
+//		}
+//		
 		//eliminar carrera
 //		if (t.eliminarTipo("Administrativo")) {
 //			System.out.println("Se eliminó correctamente");

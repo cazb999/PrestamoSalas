@@ -133,11 +133,11 @@ public class Equipo {
 
 		Equipo e = new Equipo();
 		// agregar equipo
-//		if (e.crearEquipo(new Modelo_Equipo(0 ,"E04", 1))) {
-//			System.out.println("Se registro correctamente");
-//		} else {
-//			System.out.println("Ocurrió un error");
-//		}
+		if (e.crearEquipo(new Modelo_Equipo(0 ,"E03", 2))) {
+			System.out.println("Se registro correctamente");
+		} else {
+			System.out.println("Ocurrió un error");
+		}
 		
 //		// buscar equipo
 //		Modelo_Equipo equipo = e.obtenerEquipo("E01",2);
@@ -146,10 +146,10 @@ public class Equipo {
 //		System.out.println("Sala: "+equipo.getIDSALA());
 		
 		//obtener todas las carreras
-		ArrayList<Modelo_Equipo> equipos = e.obtenerEquipos(1);
-		for (int i = 0; i < equipos.size(); i++) {
-			System.out.println("id = "+equipos.get(i).getIDEQUIPO()+" nombre = "+equipos.get(i).getNOMBREEQUIPO()+" Sala = "+equipos.get(i).getIDSALA());
-		}
+//		ArrayList<Modelo_Equipo> equipos = e.obtenerEquipos(1);
+//		for (int i = 0; i < equipos.size(); i++) {
+//			System.out.println("id = "+equipos.get(i).getIDEQUIPO()+" nombre = "+equipos.get(i).getNOMBREEQUIPO()+" Sala = "+equipos.get(i).getIDSALA());
+//		}
 		
 		//eliminar carrera
 //		if (e.eliminarEquipo("E03",1)) {

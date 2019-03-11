@@ -130,7 +130,7 @@ public class Sala {
 
 		Sala s = new Sala();
 		// agregar sala
-		if (s.crearSala(new Modelo_Sala(0 ,"A301", 25))) {
+		if (s.crearSala(new Modelo_Sala(0 ,"A101", 25))) {
 			System.out.println("Se registro correctamente");
 		} else {
 			System.out.println("Ocurrió un error");

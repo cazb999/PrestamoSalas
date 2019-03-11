@@ -140,11 +140,11 @@ public class Usuario {
 
 		Usuario u = new Usuario();
 		// agregar usuario
-//		if (u.crearUsuario(new Modelo_Usuario(0, 1, 1, 201320111, "Pepito", "Perez"))) {
-//			System.out.println("Se registro correctamente");
-//		} else {
-//			System.out.println("Ocurrió un error");
-//		}
+		if (u.crearUsuario(new Modelo_Usuario(0, 2, 1, 201320556, "Jose", "Jose"))) {
+			System.out.println("Se registro correctamente");
+		} else {
+			System.out.println("Ocurrió un error");
+		}
 		
 //		// buscar USUARIO
 //		Modelo_Usuario usuario = u.obtenerUsuario(201322123);
@@ -156,10 +156,10 @@ public class Usuario {
 //		System.out.println("Apellido "+usuario.getAPELLIDOUSUARIO());
 		
 		//obtener todos los usuarios
-		ArrayList<Modelo_Usuario> usuarios = u.obtenerUsuarios();
-		for (int i = 0; i < usuarios.size(); i++) {
-			System.out.println("Codigo = "+usuarios.get(i).getCODIGOUSUARIO()+" Nombre = "+usuarios.get(i).getNOMBREUSUARIO());
-		}
+//		ArrayList<Modelo_Usuario> usuarios = u.obtenerUsuarios();
+//		for (int i = 0; i < usuarios.size(); i++) {
+//			System.out.println("Codigo = "+usuarios.get(i).getCODIGOUSUARIO()+" Nombre = "+usuarios.get(i).getNOMBREUSUARIO());
+//		}
 		
 		//eliminar carrera
 //		if (u.eliminarUsuario(201322123)) {
