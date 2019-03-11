@@ -52,7 +52,7 @@ public class MenuAdminInfo extends JFrame {
 		
 		
 		JLabel lblBanner = new JLabel("");
-		ImageIcon imagen = new ImageIcon("C:\\Users\\GTX10504GB\\Documents\\Proyectos Eclipse\\GOS\\src\\images\\banner.PNG");
+		ImageIcon imagen = new ImageIcon("C:\\Users\\Carlos\\Desktop\\U\\GOS\\src\\images\\banner.PNG");
 		lblBanner.setBounds(0, 0, 782, 125);
 		imagen = new ImageIcon(imagen.getImage().getScaledInstance(lblBanner.getWidth(), lblBanner.getHeight(), Image.SCALE_DEFAULT));
 		lblBanner.setIcon(imagen);

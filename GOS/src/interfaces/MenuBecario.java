@@ -3,6 +3,8 @@ package interfaces;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -13,7 +15,7 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JButton;
 
-public class MenuBecario extends JFrame {
+public class MenuBecario extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
 	
@@ -56,7 +58,7 @@ public class MenuBecario extends JFrame {
 		
 		
 		JLabel lblBanner = new JLabel("");
-		ImageIcon imagen = new ImageIcon("C:\\Users\\GTX10504GB\\Documents\\Proyectos Eclipse\\GOS\\src\\images\\banner.PNG");
+		ImageIcon imagen = new ImageIcon("C:\\Users\\Carlos\\Desktop\\U\\GOS\\src\\images\\banner.PNG");
 		lblBanner.setBounds(0, 0, 782, 125);
 		imagen = new ImageIcon(imagen.getImage().getScaledInstance(lblBanner.getWidth(), lblBanner.getHeight(), Image.SCALE_DEFAULT));
 		lblBanner.setIcon(imagen);
@@ -125,5 +127,26 @@ public class MenuBecario extends JFrame {
 		label.setFont(new Font("Arial", Font.PLAIN, 30));
 		label.setBounds(70, 147, 171, 34);
 		contentPane.add(label);
+		
+		btnDevolverEquipo.addActionListener(this);
+		btnDevolverSalaEstudi.addActionListener(this);
+		btnDevolverSalaProfe.addActionListener(this);
+		btnPrestarEquipo.addActionListener(this);
+		btnPrestarSalaEstudi.addActionListener(this);
+		btnPrestarSalaProfe.addActionListener(this);
+		btnSalir.addActionListener(this);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if(btnPrestarEquipo == e.getSource()) {
+			PrestarEquipo pe = new PrestarEquipo();
+			pe.setVisible(true);
+        	pe.setLocationRelativeTo(null);
+        	pe.setResizable(false);
+        	this.dispose();
+		}
+		
 	}
 }
