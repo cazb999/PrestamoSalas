@@ -13,7 +13,7 @@ public class Carrera {
 		// TODO Auto-generated constructor stub
 	}
 
-	private boolean crearCarrera(String nombreCarrera) {
+	public boolean crearCarrera(String nombreCarrera) {
 		Connection con = null;
 		boolean save = false;
 
@@ -39,7 +39,7 @@ public class Carrera {
 		return save;
 	}
 
-	private boolean eliminarCarrera(String nombreCarrera) {
+	public boolean eliminarCarrera(String nombreCarrera) {
 		Connection con = null;
 		boolean eliminado = false;
 
@@ -65,7 +65,7 @@ public class Carrera {
 		return eliminado;
 	}
 
-	private ArrayList<String[]> obtenerCarreras() {		
+	public ArrayList<String[]> obtenerCarreras() {		
 		ArrayList<String[]> carreras = new ArrayList<String[]>();
 		Connection con = null;
 
@@ -91,15 +91,15 @@ public class Carrera {
 		return carreras;
 	}
 
-	private String[] obtenerCarrera(String nombreCarrera) {
+	public String[] obtenerCarrera(int idCarrera) {
 		String[] carrera = new String[2];
 		Connection con = null;
 
 		try {
 
 			con = conexion.getConnection();
-			ps = con.prepareStatement("SELECT * FROM carrera WHERE NOMBRECARRERA = ?");
-			ps.setString(1, nombreCarrera);
+			ps = con.prepareStatement("SELECT * FROM carrera WHERE IDCARRERA = ?");
+			ps.setInt(1, idCarrera);
 
 			rs = ps.executeQuery();
 

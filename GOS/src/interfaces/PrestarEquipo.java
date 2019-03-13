@@ -8,23 +8,32 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+
+import controller.PrestamoEquipo_Controller;
+
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.border.LineBorder;
 
 public class PrestarEquipo extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtUsuario;
 	private JButton btnBuscarUsuario;
-	private JLabel lblTipoUsuario;
 	private JLabel lblNombre;
 	private JLabel lblCarrera;
 	private JLabel lblApellido;
 	private JLabel lblCorreo;
 	private JLabel lblTipo;
+	private JTable tableHorarios;
 
 	/**
 	 * Launch the application.
@@ -47,7 +56,7 @@ public class PrestarEquipo extends JFrame {
 	 */
 	public PrestarEquipo() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 850, 450);
+		setBounds(100, 100, 950, 850);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -78,14 +87,16 @@ public class PrestarEquipo extends JFrame {
 		contentPane.add(txtUsuario);
 		txtUsuario.setColumns(10);
 		
-		JLabel lblCodigo = new JLabel("Codigo");
+		JLabel lblCodigo = new JLabel("Código");
 		lblCodigo.setFont(new Font("Arial", Font.BOLD, 15));
 		lblCodigo.setBounds(30, 202, 56, 16);
 		contentPane.add(lblCodigo);
 		
 		btnBuscarUsuario = new JButton("Buscar");
+		btnBuscarUsuario.setForeground(Color.WHITE);
+		btnBuscarUsuario.setBackground(Color.DARK_GRAY);
 		btnBuscarUsuario.setFont(new Font("Arial", Font.BOLD, 15));
-		btnBuscarUsuario.setBounds(242, 198, 97, 25);
+		btnBuscarUsuario.setBounds(248, 193, 97, 30);
 		contentPane.add(btnBuscarUsuario);
 		
 		JLabel lbl1 = new JLabel("Nombre:");
@@ -104,7 +115,7 @@ public class PrestarEquipo extends JFrame {
 		lbl4.setBounds(198, 298, 56, 16);
 		contentPane.add(lbl4);
 		
-		lblTipoUsuario = new JLabel("Tipo usuario:");
+		JLabel lblTipoUsuario = new JLabel("Tipo usuario:");
 		lblTipoUsuario.setBounds(30, 346, 84, 16);
 		contentPane.add(lblTipoUsuario);
 		
@@ -132,5 +143,128 @@ public class PrestarEquipo extends JFrame {
 		lblTipo.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblTipo.setBounds(126, 346, 101, 16);
 		contentPane.add(lblTipo);
+		
+		JLabel lblSalasDisponibles = new JLabel("Salas Disponibles");
+		lblSalasDisponibles.setFont(new Font("Arial", Font.BOLD, 15));
+		lblSalasDisponibles.setBounds(421, 198, 140, 25);
+		contentPane.add(lblSalasDisponibles);
+		
+		JComboBox cbxSalas = new JComboBox();
+		cbxSalas.setModel(new DefaultComboBoxModel(new String[] {"Salas"}));
+		cbxSalas.setSelectedIndex(0);
+		cbxSalas.setBounds(573, 198, 202, 25);
+		cbxSalas.setEditable(false);
+		getContentPane().add(cbxSalas);
+		
+		JLabel lblSeleccioneElEquipo = new JLabel("Seleccione el equipo");
+		lblSeleccioneElEquipo.setFont(new Font("Arial", Font.BOLD, 15));
+		lblSeleccioneElEquipo.setBounds(403, 263, 158, 25);
+		contentPane.add(lblSeleccioneElEquipo);
+		
+		JComboBox cbxEquipos = new JComboBox();
+		cbxEquipos.setModel(new DefaultComboBoxModel(new String[] {"Equipo"}));
+		cbxEquipos.setSelectedIndex(0);
+		cbxEquipos.setBounds(573, 263, 202, 25);
+		cbxEquipos.setEditable(false);
+		contentPane.add(cbxEquipos);
+		
+		JButton btnPrestar = new JButton("Prestar");
+		btnPrestar.setForeground(Color.WHITE);
+		btnPrestar.setFont(new Font("Arial", Font.BOLD, 15));
+		btnPrestar.setBackground(Color.DARK_GRAY);
+		btnPrestar.setBounds(678, 332, 97, 30);
+		contentPane.add(btnPrestar);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setForeground(Color.WHITE);
+		btnCancelar.setFont(new Font("Arial", Font.BOLD, 15));
+		btnCancelar.setBackground(Color.DARK_GRAY);
+		btnCancelar.setBounds(569, 332, 97, 30);
+		contentPane.add(btnCancelar);
+		
+		Object[][] data = {
+			{"7 - 8", null, null, null, null, null, null},
+			{"8 - 9", null, null, null, null, null, null},
+			{"9 - 10", null, null, null, null, null, null},
+			{"10 - 11", null, null, null, null, null, null},
+			{"11 - 12", null, null, null, null, null, null},
+			{"12 - 13", null, null, null, null, null, null},
+			{"13 - 14", null, null, null, null, null, null},
+			{"14 - 15", null, null, null, null, null, null},
+			{"15 - 16", null, null, null, null, null, null},
+			{"16 - 17", null, null, null, null, null, null},
+			{"17 - 18", null, null, null, null, null, null},
+			{"18 - 19", null, null, null, null, null, null},
+			{"19 - 20", null, null, null, null, null, null},
+			{"20 - 21", null, null, null, null, null, null},
+			{"21 - 22", null, null, null, null, null, null},
+		};
+		String[] columnas = {"Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
+		DefaultTableModel dtm= new DefaultTableModel(data, columnas);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(40, 375, 880, 271);
+		contentPane.add(scrollPane);
+		tableHorarios = new JTable(dtm);
+		scrollPane.setViewportView(tableHorarios);
+		tableHorarios.setCellSelectionEnabled(true);
+		
+		btnBuscarUsuario.addActionListener(new PrestamoEquipo_Controller(this));
+	}
+
+	public JTextField getTxtUsuario() {
+		return txtUsuario;
+	}
+
+	public void setTxtUsuario(JTextField txtUsuario) {
+		this.txtUsuario = txtUsuario;
+	}
+
+	public JButton getBtnBuscarUsuario() {
+		return btnBuscarUsuario;
+	}
+
+	public void setBtnBuscarUsuario(JButton btnBuscarUsuario) {
+		this.btnBuscarUsuario = btnBuscarUsuario;
+	}
+
+	public JLabel getLblNombre() {
+		return lblNombre;
+	}
+
+	public void setLblNombre(JLabel lblNombre) {
+		this.lblNombre = lblNombre;
+	}
+
+	public JLabel getLblCarrera() {
+		return lblCarrera;
+	}
+
+	public void setLblCarrera(JLabel lblCarrera) {
+		this.lblCarrera = lblCarrera;
+	}
+
+	public JLabel getLblApellido() {
+		return lblApellido;
+	}
+
+	public void setLblApellido(JLabel lblApellido) {
+		this.lblApellido = lblApellido;
+	}
+
+	public JLabel getLblCorreo() {
+		return lblCorreo;
+	}
+
+	public void setLblCorreo(JLabel lblCorreo) {
+		this.lblCorreo = lblCorreo;
+	}
+
+	public JLabel getLblTipo() {
+		return lblTipo;
+	}
+
+	public void setLblTipo(JLabel lblTipo) {
+		this.lblTipo = lblTipo;
 	}
 }

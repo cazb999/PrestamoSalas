@@ -16,7 +16,7 @@ public class Sala {
 		// TODO Auto-generated constructor stub
 	}
 
-	private boolean crearSala(Modelo_Sala sala) {
+	public boolean crearSala(Modelo_Sala sala) {
 		Connection con = null;
 		boolean save = false;
 
@@ -43,7 +43,7 @@ public class Sala {
 		return save;
 	}
 
-	private boolean eliminarSala(String nombreSala) {
+	public boolean eliminarSala(String nombreSala) {
 		Connection con = null;
 		boolean eliminado = false;
 
@@ -69,7 +69,7 @@ public class Sala {
 		return eliminado;
 	}
 
-	private ArrayList<Modelo_Sala> obtenerSalas() {	
+	public ArrayList<Modelo_Sala> obtenerSalas() {	
 		ArrayList<Modelo_Sala> salas = new ArrayList<Modelo_Sala>();
 		Connection con = null;
 
@@ -97,7 +97,7 @@ public class Sala {
 		return salas;
 	}
 
-	private Modelo_Sala obtenerSala(String nombreSala) {
+	public Modelo_Sala obtenerSala(String nombreSala) {
 		Modelo_Sala sala = null;
 		Connection con = null;
 
@@ -130,11 +130,11 @@ public class Sala {
 
 		Sala s = new Sala();
 		// agregar sala
-		if (s.crearSala(new Modelo_Sala(0 ,"A101", 25))) {
-			System.out.println("Se registro correctamente");
-		} else {
-			System.out.println("Ocurrió un error");
-		}
+//		if (s.crearSala(new Modelo_Sala(0 ,"A101", 25))) {
+//			System.out.println("Se registro correctamente");
+//		} else {
+//			System.out.println("Ocurrió un error");
+//		}
 		
 //		// buscar sala
 //		Modelo_Sala sala = s.obtenerSala("A401");
@@ -143,10 +143,10 @@ public class Sala {
 //		System.out.println("Capacidad: "+sala.getCAPACIDADSALA());
 		
 		//obtener todas las carreras
-//		ArrayList<Modelo_Sala> salas = s.obtenerSalas();
-//		for (int i = 0; i < salas.size(); i++) {
-//			System.out.println("id = "+salas.get(i).getIDSALA()+" nombre = "+salas.get(i).getNOMBRESALA()+" capacidad = "+salas.get(i).getCAPACIDADSALA());
-//		}
+		ArrayList<Modelo_Sala> salas = s.obtenerSalas();
+		for (int i = 0; i < salas.size(); i++) {
+			System.out.println("id = "+salas.get(i).getIDSALA()+" nombre = "+salas.get(i).getNOMBRESALA()+" capacidad = "+salas.get(i).getCAPACIDADSALA());
+		}
 		
 		//eliminar carrera
 //		if (s.eliminarSala("A401")) {

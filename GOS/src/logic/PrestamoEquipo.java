@@ -23,7 +23,7 @@ public class PrestamoEquipo {
 		// TODO Auto-generated constructor stub
 	}
 
-	private boolean crearPrestamoEquipo(Modelo_Prestamo_Equipo prestamo) {
+	public boolean crearPrestamoEquipo(Modelo_Prestamo_Equipo prestamo) {
 		Connection con = null;
 		boolean save = false;
 
@@ -69,7 +69,7 @@ public class PrestamoEquipo {
 		return save;
 	}
 
-	private boolean eliminarPrestamoEquipo(int idPrestamoEquipo) {
+	public boolean eliminarPrestamoEquipo(int idPrestamoEquipo) {
 		Connection con = null;
 		boolean eliminado = false;
 
@@ -95,7 +95,7 @@ public class PrestamoEquipo {
 		return eliminado;
 	}
 
-	private ArrayList<Modelo_Prestamo_Equipo> obtenerPrestamosEquipo() {
+	public ArrayList<Modelo_Prestamo_Equipo> obtenerPrestamosEquipo() {
 		ArrayList<Modelo_Prestamo_Equipo> prestamosEquipo = new ArrayList<Modelo_Prestamo_Equipo>();
 		Connection con = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -135,7 +135,7 @@ public class PrestamoEquipo {
 		return prestamosEquipo;
 	}
 
-	private Modelo_Prestamo_Equipo obtenerPrestamoEquipo(int idPrestamoEquipo) {
+	public Modelo_Prestamo_Equipo obtenerPrestamoEquipo(int idPrestamoEquipo) {
 		Connection con = null;
 		Modelo_Prestamo_Equipo prestamoEquipo = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

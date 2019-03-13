@@ -14,7 +14,7 @@ public class Tipo {
 		
 	}
 
-	private boolean crearTipo(String nombreTipo) {
+	public boolean crearTipo(String nombreTipo) {
 		Connection con = null;
 		boolean save = false;
 
@@ -40,7 +40,7 @@ public class Tipo {
 		return save;
 	}
 
-	private boolean eliminarTipo(String nombreTipo) {
+	public boolean eliminarTipo(String nombreTipo) {
 		Connection con = null;
 		boolean eliminado = false;
 
@@ -66,7 +66,7 @@ public class Tipo {
 		return eliminado;
 	}
 
-	private ArrayList<String[]> obtenerTipos() {		
+	public ArrayList<String[]> obtenerTipos() {		
 		ArrayList<String[]> tipos = new ArrayList<String[]>();
 		Connection con = null;
 
@@ -92,15 +92,15 @@ public class Tipo {
 		return tipos;
 	}
 
-	private String[] obtenerTipo(String nombreTipo) {
+	public String[] obtenerTipo(int idTipo) {
 		String[] tipo = new String[2];
 		Connection con = null;
 
 		try {
 
 			con = conexion.getConnection();
-			ps = con.prepareStatement("SELECT * FROM tipo WHERE NOMBRETIPO = ?");
-			ps.setString(1, nombreTipo);
+			ps = con.prepareStatement("SELECT * FROM tipo WHERE IDTIPO = ?");
+			ps.setInt(1, idTipo);
 
 			rs = ps.executeQuery();
 
