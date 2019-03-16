@@ -34,8 +34,7 @@ public class PrestamoEquipo_Controller implements ActionListener {
 
 		if (this.formPrestarEquipo.getBtnBuscarUsuario() == e.getSource()) {
 			if (!this.formPrestarEquipo.getTxtUsuario().getText().equals("")) {
-				Modelo_Usuario user = this.usuario
-						.obtenerUsuario(Integer.parseInt(this.formPrestarEquipo.getTxtUsuario().getText()));
+				Modelo_Usuario user = this.usuario.obtenerUsuario(Integer.parseInt(this.formPrestarEquipo.getTxtUsuario().getText()));
 				if (user != null) {
 					this.formPrestarEquipo.getLblNombre().setText(user.getNOMBREUSUARIO());
 					this.formPrestarEquipo.getLblApellido().setText(user.getAPELLIDOUSUARIO());
@@ -58,24 +57,7 @@ public class PrestamoEquipo_Controller implements ActionListener {
 					// Trae todas las salas
 					Sala sala = new Sala();
 					ArrayList<Modelo_Sala> salas = sala.obtenerSalas();
-					System.out.println(salas);
 					// calcular que salas estan disponibles
-					ArrayList<Modelo_Sala> salasDisponibles = null;
-					for (int i = 0; i < salas.size(); i++) {
-						for (int j = 0; j < prestamos.size(); j++) {
-							
-							if (salas.get(i).getIDSALA() == prestamos.get(j).getIDSALA() && prestamos.get(j).getFECHA_FIN() != null) {
-								salasDisponibles.add(salas.get(i));
-							} else if (salas.get(i).getIDSALA() != prestamos.get(j).getIDSALA()) {
-								salasDisponibles.add(salas.get(i));
-							}
-						}
-					}
-					if (salasDisponibles != null) {
-						for (int i = 0; i < salasDisponibles.size(); i++) {
-							System.out.println(salasDisponibles.get(i).getNOMBRESALA());
-						}
-					}
 
 				} else {
 					JOptionPane.showMessageDialog(null, "Este usuario no se encuentra registrado");
