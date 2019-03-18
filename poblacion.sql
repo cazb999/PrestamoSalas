@@ -1,11 +1,12 @@
 use db_gos;
 
 show tables;
-select * from usuario;
+select * from prestamosala;
 select * from tipo;
 desc usuario;
 insert into carrera values(null,"Ing Minas");
 insert into tipo values(null, "Becario");
+delete from prestamosala where idprestamosala = 3;
 
 -- poblacion Sala
 insert into sala values(null,"A101",20);
@@ -34,4 +35,9 @@ insert into equipo values(null,"E03",5);
 -- poblacion prestamo sala
 insert into prestamosala (DIAPRESTAMOSALA, HORAINICIO, DIADEVOLUCIONSALA, HORAFIN, IDUSUARIO, IDSALA) values ("2019-03-11","10:00:00","2019-03-11","12:00:00",1,1);
 insert into prestamosala (DIAPRESTAMOSALA, HORAINICIO, DIADEVOLUCIONSALA, HORAFIN, IDUSUARIO, IDSALA) values ("2019-03-12","10:00:00","2019-03-12","12:00:00",1,1);
-insert into prestamosala (DIAPRESTAMOSALA, HORAINICIO, DIADEVOLUCIONSALA, HORAFIN, IDUSUARIO, IDSALA) values ("2019-03-13","10:00:00",null,null,1,1);
+
+insert into prestamosala (DIAPRESTAMOSALA, HORAINICIO, DIADEVOLUCIONSALA, HORAFIN, IDUSUARIO, IDSALA) values ("2019-03-17","10:00:00","2019-03-17","12:00:00",1,1);
+insert into prestamosala (DIAPRESTAMOSALA, HORAINICIO, DIADEVOLUCIONSALA, HORAFIN, IDUSUARIO, IDSALA) values ("2019-03-17","14:00:00","2019-03-17","16:00:00",1,1);
+insert into prestamosala (DIAPRESTAMOSALA, HORAINICIO, DIADEVOLUCIONSALA, HORAFIN, IDUSUARIO, IDSALA) values ("2019-03-17","18:00:00","2019-03-17","20:00:00",1,1);
+
+-- poblacion prestamo equipo

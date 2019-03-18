@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 import interfaces.PrestarSala;
 import logic.Carrera;
@@ -26,6 +27,25 @@ public class PrestamoSala_Controller implements ActionListener {
 	private Usuario usuario;
 	private PrestarSala prestarSala;
 	private Sala sala;
+	
+	private Object[][] data = {
+			{"7 - 8", null, null, null, null, null, null},
+			{"8 - 9", null, null, null, null, null, null},
+			{"9 - 10", null, null, null, null, null, null},
+			{"10 - 11", null, null, null, null, null, null},
+			{"11 - 12", null, null, null, null, null, null},
+			{"12 - 13", null, null, null, null, null, null},
+			{"13 - 14", null, null, null, null, null, null},
+			{"14 - 15", null, null, null, null, null, null},
+			{"15 - 16", null, null, null, null, null, null},
+			{"16 - 17", null, null, null, null, null, null},
+			{"17 - 18", null, null, null, null, null, null},
+			{"18 - 19", null, null, null, null, null, null},
+			{"19 - 20", null, null, null, null, null, null},
+			{"20 - 21", null, null, null, null, null, null},
+			{"21 - 22", null, null, null, null, null, null},
+		};
+	private String[] columnas = {"Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
 
 	public PrestamoSala_Controller(PrestarSala prestarSala) {
 		this.prestamoSala = new PrestamoSala();
@@ -39,8 +59,7 @@ public class PrestamoSala_Controller implements ActionListener {
 
 		if (this.prestarSala.getBtnBuscarUsuario() == e.getSource()) {
 			if (!this.prestarSala.getTxtUsuario().getText().equals("")) {
-				Modelo_Usuario user = this.usuario
-						.obtenerUsuario(Integer.parseInt(this.prestarSala.getTxtUsuario().getText()));
+				Modelo_Usuario user = this.usuario.obtenerUsuario(Integer.parseInt(this.prestarSala.getTxtUsuario().getText()));
 				if (user != null) {
 					this.prestarSala.getLblNombre().setText(user.getNOMBREUSUARIO());
 					this.prestarSala.getLblApellido().setText(user.getAPELLIDOUSUARIO());
@@ -80,7 +99,8 @@ public class PrestamoSala_Controller implements ActionListener {
 
 		if (this.prestarSala.getBtnDisponibilidad() == e.getSource()) {
 			String itemSeleecionado = (String) this.prestarSala.getCbxSalas().getSelectedItem();
-
+			this.prestarSala.getTableHorarios().setModel(new DefaultTableModel(data, columnas));
+			
 			Calendar lunes = Calendar.getInstance();
 			Calendar martes = Calendar.getInstance();
 			Calendar miercoles = Calendar.getInstance();
@@ -93,7 +113,8 @@ public class PrestamoSala_Controller implements ActionListener {
 				
 				ArrayList<Calendar> fechasSemana = new ArrayList<Calendar>();
 				SimpleDateFormat sdf_semana = new SimpleDateFormat("yyyy-MM-dd");
-				Calendar hoy = Calendar.getInstance();
+				Calendar hoy = this.prestarSala.getDateDia().getCalendar();
+				System.out.println(sdf_semana.format(hoy.getTime()));
 				switch (hoy.get(Calendar.DAY_OF_WEEK)) {
 				case 1:
 					lunes.add(Calendar.DAY_OF_YEAR, 1);
@@ -206,15 +227,35 @@ public class PrestamoSala_Controller implements ActionListener {
 				for (int i = 0; i < fechasSemana.size(); i++) {
 					ArrayList<Modelo_Prestamo_Sala> prestamosHoy = ps.obtenerPrestamosSalaPorFecha(fechasSemana.get(i));
 					for (int j = 0; j < prestamosHoy.size(); j++) {
-						for (int j2 = 7; j2 <= 22; j2++) {
-							if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) == (j2)) {
-								System.out.println("j2->"+j2);
-								System.out.println("Fecha fin ->"+sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime()));
-								for (int k = j2; k < Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())); k++) {
-									System.out.println("k->"+k);
-									this.prestarSala.getTableHorarios().setValueAt("si", (k-7), i+1);
+						for (int j2 = 7; j2 < 22; j2++) {
+							
+							if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) == 0) {
+								if(12 == (j2)) {
+									if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())) == 0) {
+										for (int k = j2; k < 12; k++) {
+											this.prestarSala.getTableHorarios().setValueAt("XXXXX", (k-7), i+1);
+										}
+									} else if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())) != 0) {
+										for (int k = j2; k < Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())); k++) {
+											this.prestarSala.getTableHorarios().setValueAt("XXXXX", (k-7), i+1);
+										}
+									}
+									
+									
 								}
-								
+							} else if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) != 0)	{
+								if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) == (j2)) {
+									if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())) == 0) {
+										for (int k = j2; k < 12; k++) {
+											this.prestarSala.getTableHorarios().setValueAt("XXXXX", (k-7), i+1);
+										}
+									} else if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())) != 0) {
+										for (int k = j2; k < Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())); k++) {
+											this.prestarSala.getTableHorarios().setValueAt("XXXXX", (k-7), i+1);
+										}
+									}
+									
+								}
 							}
 						}
 					}
