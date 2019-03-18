@@ -21,8 +21,8 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.PrestamoEquipo_Controller;
 import controller.PrestamoSala_Controller;
-import datechooser.beans.DateChooserCombo;
-import datechooser.beans.DateChooserPanel;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JCalendar;
 
 public class PrestarSala extends JFrame {
 
@@ -38,6 +38,8 @@ public class PrestarSala extends JFrame {
 	private JButton btnPrestar;
 	private JButton btnCancelar;
 	private JComboBox cbxSalas;
+	private JCalendar dateDia;
+	private JButton btnDisponibilidad;
 
 	/**
 	 * Launch the application.
@@ -80,7 +82,7 @@ public class PrestarSala extends JFrame {
 		lblSeleccionarUsuario.setBounds(58, 138, 186, 31);
 		contentPane.add(lblSeleccionarUsuario);
 		
-		JLabel lblSeleccionarEquipo = new JLabel("Seleccionar Equipo");
+		JLabel lblSeleccionarEquipo = new JLabel("Seleccionar Sala");
 		lblSeleccionarEquipo.setFont(new Font("Arial", Font.PLAIN, 20));
 		lblSeleccionarEquipo.setBounds(519, 138, 186, 31);
 		contentPane.add(lblSeleccionarEquipo);
@@ -169,14 +171,14 @@ public class PrestarSala extends JFrame {
 		btnPrestar.setForeground(Color.WHITE);
 		btnPrestar.setFont(new Font("Arial", Font.BOLD, 15));
 		btnPrestar.setBackground(Color.DARK_GRAY);
-		btnPrestar.setBounds(685, 705, 97, 30);
+		btnPrestar.setBounds(693, 748, 97, 30);
 		contentPane.add(btnPrestar);
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setForeground(Color.WHITE);
 		btnCancelar.setFont(new Font("Arial", Font.BOLD, 15));
 		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setBounds(576, 705, 97, 30);
+		btnCancelar.setBounds(584, 748, 97, 30);
 		contentPane.add(btnCancelar);
 		
 		Object[][] data = {
@@ -200,16 +202,29 @@ public class PrestarSala extends JFrame {
 		DefaultTableModel dtm= new DefaultTableModel(data, columnas);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(30, 421, 880, 271);
+		scrollPane.setBounds(30, 464, 880, 271);
 		contentPane.add(scrollPane);
 		tableHorarios = new JTable(dtm);
 		scrollPane.setViewportView(tableHorarios);
 		tableHorarios.setCellSelectionEnabled(true);
 		
+		dateDia = new JCalendar();
+		dateDia.setBounds(573, 250, 202, 155);
+		dateDia.setEnabled(false);
+		contentPane.add(dateDia);
+		
+		btnDisponibilidad = new JButton("Buscar Disponibilidad");
+		btnDisponibilidad.setForeground(Color.WHITE);
+		btnDisponibilidad.setFont(new Font("Arial", Font.BOLD, 15));
+		btnDisponibilidad.setBackground(Color.DARK_GRAY);
+		btnDisponibilidad.setBounds(573, 421, 202, 30);
+		btnDisponibilidad.setEnabled(false);
+		contentPane.add(btnDisponibilidad);
+		
 		btnBuscarUsuario.addActionListener(new PrestamoSala_Controller(this));
 		btnCancelar.addActionListener(new PrestamoSala_Controller(this));
 		btnPrestar.addActionListener(new PrestamoSala_Controller(this));
-		cbxSalas.addActionListener(new PrestamoSala_Controller(this));
+		btnDisponibilidad.addActionListener(new PrestamoSala_Controller(this));
 	}
 
 	public JTextField getTxtUsuario() {
@@ -283,4 +298,38 @@ public class PrestarSala extends JFrame {
 	public void setCbxSalas(JComboBox cbxSalas) {
 		this.cbxSalas = cbxSalas;
 	}
+
+	public JButton getBtnCancelar() {
+		return btnCancelar;
+	}
+
+	public void setBtnCancelar(JButton btnCancelar) {
+		this.btnCancelar = btnCancelar;
+	}
+
+	public JCalendar getDateDia() {
+		return dateDia;
+	}
+
+	public void setDateDia(JCalendar dateDia) {
+		this.dateDia = dateDia;
+	}
+
+	public JButton getBtnPrestar() {
+		return btnPrestar;
+	}
+
+	public void setBtnPrestar(JButton btnPrestar) {
+		this.btnPrestar = btnPrestar;
+	}
+
+	public JButton getBtnDisponibilidad() {
+		return btnDisponibilidad;
+	}
+
+	public void setBtnDisponibilidad(JButton btnDisponibilidad) {
+		this.btnDisponibilidad = btnDisponibilidad;
+	}
+	
+	
 }

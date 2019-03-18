@@ -97,15 +97,15 @@ public class Sala {
 		return salas;
 	}
 
-	public Modelo_Sala obtenerSala(String nombreSala) {
+	public Modelo_Sala obtenerSala(int idSala) {
 		Modelo_Sala sala = null;
 		Connection con = null;
 
 		try {
 
 			con = conexion.getConnection();
-			ps = con.prepareStatement("SELECT * FROM sala WHERE NOMBRESALA = ?");
-			ps.setString(1, nombreSala);
+			ps = con.prepareStatement("SELECT * FROM sala WHERE IDSALA = ?");
+			ps.setInt(1, idSala);
 
 			rs = ps.executeQuery();
 

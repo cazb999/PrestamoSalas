@@ -133,6 +133,48 @@ public class PrestamoSala {
 		return prestamosSala;
 	}
 	
+	public ArrayList<Modelo_Prestamo_Sala> obtenerPrestamosSalaPorFecha(Calendar fecha) {
+		ArrayList<Modelo_Prestamo_Sala> prestamosSala = new ArrayList<Modelo_Prestamo_Sala>();
+		Connection con = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat sdf_input = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+
+			con = conexion.getConnection();
+			ps = con.prepareStatement("SELECT * FROM prestamosala WHERE DIAPRESTAMOSALA = ?");
+			ps.setString(1, sdf_input.format(fecha.getTime()));
+			
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Date date_inicio = sdf.parse(rs.getString("DIAPRESTAMOSALA")+" "+rs.getString("HORAINICIO"));
+				Date date_fin = sdf.parse(rs.getString("DIADEVOLUCIONSALA")+" "+rs.getString("HORAFIN"));
+				
+				Calendar calendar_inicio = Calendar.getInstance();
+				calendar_inicio.setTime(date_inicio);
+				
+				Calendar calendar_fin = Calendar.getInstance();
+				calendar_fin.setTime(date_fin);
+				
+				Modelo_Prestamo_Sala prestamoSala = new Modelo_Prestamo_Sala(
+						rs.getInt("IDPRESTAMOSALA"),
+						calendar_inicio,
+						calendar_fin,
+						rs.getInt("IDUSUARIO"),
+						rs.getInt("IDSALA")						
+						);
+				
+				prestamosSala.add(prestamoSala);
+			}
+
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return prestamosSala;
+	}
+	
 	public Modelo_Prestamo_Sala obtenerPrestamoSala(int idPrestamo) {
 		Connection con = null;
 		Modelo_Prestamo_Sala prestamoSala = null;
@@ -197,7 +239,8 @@ public class PrestamoSala {
 //		System.out.println("fecha fin "+sdf.format(prestamo.getFECHA_FIN().getTime()));
 		
 		//obtener todos los usuarios
-		ArrayList<Modelo_Prestamo_Sala> prestamos = ps.obtenerPrestamosSala();
+		Calendar calendario =Calendar.getInstance();
+		ArrayList<Modelo_Prestamo_Sala> prestamos = ps.obtenerPrestamosSalaPorFecha(calendario);
 		for (int i = 0; i < prestamos.size(); i++) {
 			System.out.println("ID = "+prestamos.get(i).getIDPRESTAMOSALA()+" Fecha Inicio = "+sdf.format(prestamos.get(i).getFECHA_INICIO().getTime())+" Fecha Fin = "+sdf.format(prestamos.get(i).getFECHA_FIN().getTime()));
 		}
