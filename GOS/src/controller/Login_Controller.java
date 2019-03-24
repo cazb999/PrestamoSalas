@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import interfaces.Login;
+import interfaces.MenuAdmin;
 import interfaces.MenuBecario;
 import logic.Usuario;
 import models.Modelo_Usuario;
@@ -30,14 +31,19 @@ public class Login_Controller implements ActionListener {
 			int cod = Integer.parseInt(usuario);
 			if (user != null) {
 				if (user.getCONTRASENA() != null) {
-					if (user.getCODIGOUSUARIO() == cod && user.getCONTRASENA().equals(contrasena)
-							&& user.getIDTIPO() == 4) {
+					if (user.getCODIGOUSUARIO() == cod && user.getCONTRASENA().equals(contrasena) && user.getIDTIPO() == 4) {
 						MenuBecario mb = new MenuBecario();
 						mb.setVisible(true);
 						mb.setLocationRelativeTo(null);
 						mb.setResizable(false);
 						this.login.dispose();
-					} else {
+					} else if(user.getCODIGOUSUARIO() == cod && user.getCONTRASENA().equals(contrasena) && user.getIDTIPO() == 5) {
+						MenuAdmin  ma = new MenuAdmin();
+						ma.setVisible(true);
+						ma.setLocationRelativeTo(null);
+						ma.setResizable(false);
+						this.login.dispose();
+					}else {
 						JOptionPane.showMessageDialog(null, "Contraseña o usuario incorrecto");
 					}
 				} else {

@@ -54,8 +54,9 @@ public class Login extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		Imagen i = new Imagen();
 		JLabel lblBanner = new JLabel("");
-		ImageIcon imagen = new ImageIcon("C:\\Users\\Carlos\\Desktop\\U\\GOS\\src\\images\\banner.PNG");
+		ImageIcon imagen = new ImageIcon(i.RUTA_IMAGEN);
 		lblBanner.setBounds(0, 0, 782, 125);
 		imagen = new ImageIcon(imagen.getImage().getScaledInstance(lblBanner.getWidth(), lblBanner.getHeight(), Image.SCALE_DEFAULT));
 		lblBanner.setIcon(imagen);

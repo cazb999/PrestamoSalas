@@ -240,6 +240,7 @@ public class PrestamoSala {
 		
 		//obtener todos los usuarios
 		Calendar calendario =Calendar.getInstance();
+//		calendario.add(Calendar.DAY_OF_YEAR, -6);
 		ArrayList<Modelo_Prestamo_Sala> prestamos = ps.obtenerPrestamosSalaPorFecha(calendario);
 		for (int i = 0; i < prestamos.size(); i++) {
 			System.out.println("ID = "+prestamos.get(i).getIDPRESTAMOSALA()+" Fecha Inicio = "+sdf.format(prestamos.get(i).getFECHA_INICIO().getTime())+" Fecha Fin = "+sdf.format(prestamos.get(i).getFECHA_FIN().getTime()));

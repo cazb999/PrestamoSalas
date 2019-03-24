@@ -16,7 +16,7 @@ public class Equipo {
 		// TODO Auto-generated constructor stub
 	}
 
-	private boolean crearEquipo(Modelo_Equipo equipo) {
+	public boolean crearEquipo(Modelo_Equipo equipo) {
 		Connection con = null;
 		boolean save = false;
 
@@ -43,7 +43,7 @@ public class Equipo {
 		return save;
 	}
 
-	private boolean eliminarEquipo(String nombreEquipo, int idSala) {
+	public boolean eliminarEquipo(String nombreEquipo, int idSala) {
 		Connection con = null;
 		boolean eliminado = false;
 
@@ -70,7 +70,7 @@ public class Equipo {
 		return eliminado;
 	}
 
-	private ArrayList<Modelo_Equipo> obtenerEquipos(int idSala) {
+	public ArrayList<Modelo_Equipo> obtenerEquipos(int idSala) {
 		ArrayList<Modelo_Equipo> equipos = new ArrayList<Modelo_Equipo>();
 		Connection con = null;
 
@@ -99,7 +99,7 @@ public class Equipo {
 		return equipos;
 	}
 
-	private Modelo_Equipo obtenerEquipo(String nombreEquipo, int idSala) {
+	public Modelo_Equipo obtenerEquipo(String nombreEquipo, int idSala) {
 		Modelo_Equipo equipo = null;
 		Connection con = null;
 

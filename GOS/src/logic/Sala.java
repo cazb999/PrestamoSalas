@@ -97,15 +97,15 @@ public class Sala {
 		return salas;
 	}
 
-	public Modelo_Sala obtenerSala(int idSala) {
+	public Modelo_Sala obtenerSala(String nombreSala) {
 		Modelo_Sala sala = null;
 		Connection con = null;
 
 		try {
 
 			con = conexion.getConnection();
-			ps = con.prepareStatement("SELECT * FROM sala WHERE IDSALA = ?");
-			ps.setInt(1, idSala);
+			ps = con.prepareStatement("SELECT * FROM sala WHERE NOMBRESALA = ?");
+			ps.setString(1, nombreSala);
 
 			rs = ps.executeQuery();
 
@@ -125,6 +125,31 @@ public class Sala {
 		
 		return sala;
 	}
+	
+	public boolean salaExiste(String nombreSala) {
+		Connection con = null;
+		boolean usuarioExiste=false;
+
+		try {
+
+			con = conexion.getConnection();
+			ps = con.prepareStatement("SELECT * FROM sala WHERE NOMBRESALA = ?");
+			ps.setString(1, nombreSala);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				usuarioExiste=true;
+			} else {
+				usuarioExiste=false;
+			}
+
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return usuarioExiste;
+	}
 
 	public static void main(String[] args) {
 
@@ -137,16 +162,16 @@ public class Sala {
 //		}
 		
 //		// buscar sala
-//		Modelo_Sala sala = s.obtenerSala("A401");
-//		System.out.println("ID: "+sala.getIDSALA());
-//		System.out.println("Nombre: "+sala.getNOMBRESALA());
-//		System.out.println("Capacidad: "+sala.getCAPACIDADSALA());
+		Modelo_Sala sala = s.obtenerSala("A401");
+		System.out.println("ID: "+sala.getIDSALA());
+		System.out.println("Nombre: "+sala.getNOMBRESALA());
+		System.out.println("Capacidad: "+sala.getCAPACIDADSALA());
 		
 		//obtener todas las carreras
-		ArrayList<Modelo_Sala> salas = s.obtenerSalas();
-		for (int i = 0; i < salas.size(); i++) {
-			System.out.println("id = "+salas.get(i).getIDSALA()+" nombre = "+salas.get(i).getNOMBRESALA()+" capacidad = "+salas.get(i).getCAPACIDADSALA());
-		}
+//		ArrayList<Modelo_Sala> salas = s.obtenerSalas();
+//		for (int i = 0; i < salas.size(); i++) {
+//			System.out.println("id = "+salas.get(i).getIDSALA()+" nombre = "+salas.get(i).getNOMBRESALA()+" capacidad = "+salas.get(i).getCAPACIDADSALA());
+//		}
 		
 		//eliminar carrera
 //		if (s.eliminarSala("A401")) {

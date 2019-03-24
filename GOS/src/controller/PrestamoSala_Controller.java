@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Checkbox;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -7,9 +8,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import interfaces.PrestarSala;
 import logic.Carrera;
@@ -21,31 +26,22 @@ import models.Modelo_Prestamo_Sala;
 import models.Modelo_Sala;
 import models.Modelo_Usuario;
 
-public class PrestamoSala_Controller implements ActionListener {
+public class PrestamoSala_Controller implements ActionListener{
 
 	private PrestamoSala prestamoSala;
 	private Usuario usuario;
 	private PrestarSala prestarSala;
 	private Sala sala;
-	
-	private Object[][] data = {
-			{"7 - 8", null, null, null, null, null, null},
-			{"8 - 9", null, null, null, null, null, null},
-			{"9 - 10", null, null, null, null, null, null},
-			{"10 - 11", null, null, null, null, null, null},
-			{"11 - 12", null, null, null, null, null, null},
-			{"12 - 13", null, null, null, null, null, null},
-			{"13 - 14", null, null, null, null, null, null},
-			{"14 - 15", null, null, null, null, null, null},
-			{"15 - 16", null, null, null, null, null, null},
-			{"16 - 17", null, null, null, null, null, null},
-			{"17 - 18", null, null, null, null, null, null},
-			{"18 - 19", null, null, null, null, null, null},
-			{"19 - 20", null, null, null, null, null, null},
-			{"20 - 21", null, null, null, null, null, null},
-			{"21 - 22", null, null, null, null, null, null},
-		};
-	private String[] columnas = {"Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
+
+	private Object[][] data = { { "7 - 8", null, null, null, null, null, null },
+			{ "8 - 9", null, null, null, null, null, null }, { "9 - 10", null, null, null, null, null, null },
+			{ "10 - 11", null, null, null, null, null, null }, { "11 - 12", null, null, null, null, null, null },
+			{ "12 - 13", null, null, null, null, null, null }, { "13 - 14", null, null, null, null, null, null },
+			{ "14 - 15", null, null, null, null, null, null }, { "15 - 16", null, null, null, null, null, null },
+			{ "16 - 17", null, null, null, null, null, null }, { "17 - 18", null, null, null, null, null, null },
+			{ "18 - 19", null, null, null, null, null, null }, { "19 - 20", null, null, null, null, null, null },
+			{ "20 - 21", null, null, null, null, null, null }, { "21 - 22", null, null, null, null, null, null }, };
+	private String[] columnas = { "Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" };
 
 	public PrestamoSala_Controller(PrestarSala prestarSala) {
 		this.prestamoSala = new PrestamoSala();
@@ -59,7 +55,8 @@ public class PrestamoSala_Controller implements ActionListener {
 
 		if (this.prestarSala.getBtnBuscarUsuario() == e.getSource()) {
 			if (!this.prestarSala.getTxtUsuario().getText().equals("")) {
-				Modelo_Usuario user = this.usuario.obtenerUsuario(Integer.parseInt(this.prestarSala.getTxtUsuario().getText()));
+				Modelo_Usuario user = this.usuario
+						.obtenerUsuario(Integer.parseInt(this.prestarSala.getTxtUsuario().getText()));
 				if (user != null) {
 					this.prestarSala.getLblNombre().setText(user.getNOMBREUSUARIO());
 					this.prestarSala.getLblApellido().setText(user.getAPELLIDOUSUARIO());
@@ -98,23 +95,30 @@ public class PrestamoSala_Controller implements ActionListener {
 		}
 
 		if (this.prestarSala.getBtnDisponibilidad() == e.getSource()) {
-			String itemSeleecionado = (String) this.prestarSala.getCbxSalas().getSelectedItem();
 			this.prestarSala.getTableHorarios().setModel(new DefaultTableModel(data, columnas));
 			
-			Calendar lunes = Calendar.getInstance();
-			Calendar martes = Calendar.getInstance();
-			Calendar miercoles = Calendar.getInstance();
-			Calendar jueves = Calendar.getInstance();
-			Calendar viernes = Calendar.getInstance();
-			Calendar sabado = Calendar.getInstance();
-			Calendar domingo = Calendar.getInstance();
+			Date fehcaSeleccionada = this.prestarSala.getDateDia().getCalendar().getTime();
+
+			Calendar lunes = new GregorianCalendar();
+			lunes.setTime(fehcaSeleccionada);
+			Calendar martes = new GregorianCalendar();
+			martes.setTime(fehcaSeleccionada);
+			Calendar miercoles = new GregorianCalendar();
+			miercoles.setTime(fehcaSeleccionada);
+			Calendar jueves = new GregorianCalendar();
+			jueves.setTime(fehcaSeleccionada);
+			Calendar viernes = new GregorianCalendar();
+			viernes.setTime(fehcaSeleccionada);
+			Calendar sabado = new GregorianCalendar();
+			sabado.setTime(fehcaSeleccionada);
+			Calendar domingo = new GregorianCalendar();
+			domingo.setTime(fehcaSeleccionada);
 
 			if (this.prestarSala.getCbxSalas().getSelectedIndex() > 0) {
-				
+
 				ArrayList<Calendar> fechasSemana = new ArrayList<Calendar>();
-				SimpleDateFormat sdf_semana = new SimpleDateFormat("yyyy-MM-dd");
-				Calendar hoy = this.prestarSala.getDateDia().getCalendar();
-				System.out.println(sdf_semana.format(hoy.getTime()));
+				Calendar hoy =new GregorianCalendar();
+				hoy.setTime(fehcaSeleccionada);
 				switch (hoy.get(Calendar.DAY_OF_WEEK)) {
 				case 1:
 					lunes.add(Calendar.DAY_OF_YEAR, 1);
@@ -123,13 +127,14 @@ public class PrestamoSala_Controller implements ActionListener {
 					jueves.add(Calendar.DAY_OF_YEAR, 4);
 					viernes.add(Calendar.DAY_OF_YEAR, 5);
 					sabado.add(Calendar.DAY_OF_YEAR, 6);
-					fechasSemana.add(hoy);
+					fechasSemana.add(domingo);
 					fechasSemana.add(lunes);
 					fechasSemana.add(martes);
 					fechasSemana.add(miercoles);
 					fechasSemana.add(jueves);
 					fechasSemana.add(viernes);
 					fechasSemana.add(sabado);
+
 					break;
 				case 2:
 					domingo.add(Calendar.DAY_OF_YEAR, -1);
@@ -139,7 +144,7 @@ public class PrestamoSala_Controller implements ActionListener {
 					viernes.add(Calendar.DAY_OF_YEAR, 4);
 					sabado.add(Calendar.DAY_OF_YEAR, 5);
 					fechasSemana.add(domingo);
-					fechasSemana.add(hoy);
+					fechasSemana.add(lunes);
 					fechasSemana.add(martes);
 					fechasSemana.add(miercoles);
 					fechasSemana.add(jueves);
@@ -155,17 +160,24 @@ public class PrestamoSala_Controller implements ActionListener {
 					sabado.add(Calendar.DAY_OF_YEAR, 4);
 					fechasSemana.add(domingo);
 					fechasSemana.add(lunes);
-					fechasSemana.add(hoy);
+					fechasSemana.add(martes);
 					fechasSemana.add(miercoles);
 					fechasSemana.add(jueves);
 					fechasSemana.add(viernes);
 					fechasSemana.add(sabado);
+
 					break;
 				case 4:
+					domingo.add(Calendar.DAY_OF_YEAR, -3);
+					lunes.add(Calendar.DAY_OF_YEAR, -2);
+					martes.add(Calendar.DAY_OF_YEAR, -1);
+					jueves.add(Calendar.DAY_OF_YEAR, 1);
+					viernes.add(Calendar.DAY_OF_YEAR, 2);
+					sabado.add(Calendar.DAY_OF_YEAR, 3);
 					fechasSemana.add(domingo);
 					fechasSemana.add(lunes);
 					fechasSemana.add(martes);
-					fechasSemana.add(hoy);
+					fechasSemana.add(miercoles);
 					fechasSemana.add(jueves);
 					fechasSemana.add(viernes);
 					fechasSemana.add(sabado);
@@ -181,7 +193,7 @@ public class PrestamoSala_Controller implements ActionListener {
 					fechasSemana.add(lunes);
 					fechasSemana.add(martes);
 					fechasSemana.add(miercoles);
-					fechasSemana.add(hoy);
+					fechasSemana.add(jueves);
 					fechasSemana.add(viernes);
 					fechasSemana.add(sabado);
 					break;
@@ -197,7 +209,7 @@ public class PrestamoSala_Controller implements ActionListener {
 					fechasSemana.add(martes);
 					fechasSemana.add(miercoles);
 					fechasSemana.add(jueves);
-					fechasSemana.add(hoy);
+					fechasSemana.add(viernes);
 					fechasSemana.add(sabado);
 					break;
 
@@ -207,64 +219,58 @@ public class PrestamoSala_Controller implements ActionListener {
 					martes.add(Calendar.DAY_OF_YEAR, -4);
 					miercoles.add(Calendar.DAY_OF_YEAR, -3);
 					jueves.add(Calendar.DAY_OF_YEAR, -2);
-					sabado.add(Calendar.DAY_OF_YEAR, -1);
+					viernes.add(Calendar.DAY_OF_YEAR, -1);
 					fechasSemana.add(domingo);
 					fechasSemana.add(lunes);
 					fechasSemana.add(martes);
 					fechasSemana.add(miercoles);
 					fechasSemana.add(jueves);
 					fechasSemana.add(viernes);
-					fechasSemana.add(hoy);
+					fechasSemana.add(sabado);
 					break;
 
 				default:
 					break;
 				}
-				
+
 				// Trae todos los prestamos de las salas de cada semana
 				PrestamoSala ps = new PrestamoSala();
-				SimpleDateFormat sdf = new SimpleDateFormat("HH");
+				SimpleDateFormat sdf = new SimpleDateFormat("kk");
+				SimpleDateFormat sdf_aux = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+				// este for cambiar la hora 24 por 12
 				for (int i = 0; i < fechasSemana.size(); i++) {
 					ArrayList<Modelo_Prestamo_Sala> prestamosHoy = ps.obtenerPrestamosSalaPorFecha(fechasSemana.get(i));
+					for (int j = 0; j <prestamosHoy.size(); j++) {
+						if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) == 24) {
+							prestamosHoy.get(j).getFECHA_INICIO().add(Calendar.HOUR_OF_DAY, 12);
+						}
+						if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())) == 24) {
+							prestamosHoy.get(j).getFECHA_FIN().add(Calendar.HOUR_OF_DAY, 12);
+						}
+					}
+					// este for llena las casillas de la tabla
 					for (int j = 0; j < prestamosHoy.size(); j++) {
-						for (int j2 = 7; j2 < 22; j2++) {
-							
-							if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) == 0) {
-								if(12 == (j2)) {
-									if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())) == 0) {
-										for (int k = j2; k < 12; k++) {
-											this.prestarSala.getTableHorarios().setValueAt("XXXXX", (k-7), i+1);
-										}
-									} else if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())) != 0) {
-										for (int k = j2; k < Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())); k++) {
-											this.prestarSala.getTableHorarios().setValueAt("XXXXX", (k-7), i+1);
-										}
-									}
-									
-									
-								}
-							} else if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) != 0)	{
-								if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) == (j2)) {
-									if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())) == 0) {
-										for (int k = j2; k < 12; k++) {
-											this.prestarSala.getTableHorarios().setValueAt("XXXXX", (k-7), i+1);
-										}
-									} else if(Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())) != 0) {
-										for (int k = j2; k < Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())); k++) {
-											this.prestarSala.getTableHorarios().setValueAt("XXXXX", (k-7), i+1);
-										}
-									}
+						for (int j2 = 7; j2 <= 22; j2++) {
+							if (Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) == j2) {
+								for (int k = j2; k < Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())); k++) {
+									this.prestarSala.getTableHorarios().setValueAt("XXXXX", (k - 7), i);
 									
 								}
 							}
 						}
 					}
 				}
-
 			}
-
 		}
-
+		
+		if(e.getSource() == this.prestarSala.getBtnPrestar()) {
+			int rowIndex = this.prestarSala.getTableHorarios().getSelectedRow();
+			int colIndex = this.prestarSala.getTableHorarios().getSelectedColumn();
+//			if(this.prestarSala.getTableHorarios().getValueAt(rowIndex, colIndex).equals("Disponible")) {
+//				System.out.println("Si");
+//			}
+			System.out.println("Fila y columna seleccionada ->");			
+			System.out.println(rowIndex+"-"+colIndex);
+		}
 	}
-
 }

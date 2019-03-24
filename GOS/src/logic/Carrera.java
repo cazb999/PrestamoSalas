@@ -116,6 +116,31 @@ public class Carrera {
 		
 		return carrera;
 	}
+	
+	public boolean carreraExiste(String nombreCarrera) {
+		Connection con = null;
+		boolean usuarioExiste=false;
+
+		try {
+
+			con = conexion.getConnection();
+			ps = con.prepareStatement("SELECT * FROM carrera WHERE NOMBRECARRERA = ?");
+			ps.setString(1, nombreCarrera);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				usuarioExiste=true;
+			} else {
+				usuarioExiste=false;
+			}
+
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return usuarioExiste;
+	}
 
 	public static void main(String[] args) {
 

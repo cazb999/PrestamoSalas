@@ -6,6 +6,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import controller.EliminarUsuario_Controller;
+
 import java.awt.Color;
 import java.awt.Font;
 
@@ -18,6 +20,9 @@ public class PanelEliminarEstudiante extends JPanel {
 	private JButton btnLimpiar;
 	private JTextField txtBuscarEstudiante;
 	private JButton btnEliminar;
+	private JTextField txtCarrera;
+	private JLabel lblTipo_1;
+	private JTextField txtTipo;
 	/**
 	 * Create the panel.
 	 */
@@ -25,7 +30,7 @@ public class PanelEliminarEstudiante extends JPanel {
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(null);
 		
-		JLabel lblFormularioRegistroEstudiantes = new JLabel("Formulario Eliminar Estudiante");
+		JLabel lblFormularioRegistroEstudiantes = new JLabel("Formulario Eliminar Usuario");
 		lblFormularioRegistroEstudiantes.setFont(new Font("Arial", Font.PLAIN, 30));
 		lblFormularioRegistroEstudiantes.setBounds(252, 13, 430, 35);
 		add(lblFormularioRegistroEstudiantes);
@@ -55,23 +60,21 @@ public class PanelEliminarEstudiante extends JPanel {
 		txtCodigo.setBounds(282, 137, 150, 25);
 		add(txtCodigo);
 		txtCodigo.setColumns(10);
+		txtCodigo.setEditable(false);
 		
 		txtNombre = new JTextField();
 		txtNombre.setFont(new Font("Arial", Font.PLAIN, 17));
 		txtNombre.setColumns(10);
 		txtNombre.setBounds(282, 197, 150, 25);
+		txtNombre.setEditable(false);
 		add(txtNombre);
 		
 		txtApellido = new JTextField();
 		txtApellido.setFont(new Font("Arial", Font.PLAIN, 17));
 		txtApellido.setColumns(10);
 		txtApellido.setBounds(605, 137, 150, 25);
+		txtApellido.setEditable(false);
 		add(txtApellido);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setEditable(true);
-		comboBox.setBounds(605, 197, 150, 25);
-		add(comboBox);
 		
 		btnBuscar = new JButton("Buscar");
 		btnBuscar.setBackground(Color.BLACK);
@@ -84,10 +87,10 @@ public class PanelEliminarEstudiante extends JPanel {
 		btnLimpiar.setBackground(Color.BLACK);
 		btnLimpiar.setForeground(Color.WHITE);
 		btnLimpiar.setFont(new Font("Arial", Font.PLAIN, 15));
-		btnLimpiar.setBounds(507, 292, 100, 30);
+		btnLimpiar.setBounds(507, 306, 100, 30);
 		add(btnLimpiar);
 		
-		JLabel lblCodigoEstudiante = new JLabel("C\u00F3digo Estudiante");
+		JLabel lblCodigoEstudiante = new JLabel("C\u00F3digo Usuario");
 		lblCodigoEstudiante.setFont(new Font("Arial", Font.PLAIN, 20));
 		lblCodigoEstudiante.setBounds(246, 72, 170, 25);
 		add(lblCodigoEstudiante);
@@ -102,8 +105,87 @@ public class PanelEliminarEstudiante extends JPanel {
 		btnEliminar.setForeground(Color.WHITE);
 		btnEliminar.setFont(new Font("Arial", Font.PLAIN, 15));
 		btnEliminar.setBackground(Color.BLACK);
-		btnEliminar.setBounds(322, 292, 100, 30);
+		btnEliminar.setBounds(322, 306, 100, 30);
 		add(btnEliminar);
+		
+		txtCarrera = new JTextField();
+		txtCarrera.setFont(new Font("Arial", Font.PLAIN, 17));
+		txtCarrera.setColumns(10);
+		txtCarrera.setBounds(605, 194, 150, 25);
+		txtCarrera.setEditable(false);
+		add(txtCarrera);
+		
+		lblTipo_1 = new JLabel("Tipo");
+		lblTipo_1.setFont(new Font("Arial", Font.PLAIN, 20));
+		lblTipo_1.setBounds(182, 256, 70, 25);
+		add(lblTipo_1);
+		
+		txtTipo = new JTextField();
+		txtTipo.setFont(new Font("Arial", Font.PLAIN, 17));
+		txtTipo.setColumns(10);
+		txtTipo.setBounds(282, 256, 150, 25);
+		txtTipo.setEditable(false);
+		add(txtTipo);
+		
+		btnBuscar.addActionListener(new EliminarUsuario_Controller(this));
+		btnEliminar.addActionListener(new EliminarUsuario_Controller(this));
+		btnLimpiar.addActionListener(new EliminarUsuario_Controller(this));
 	}
+	public JTextField getTxtCodigo() {
+		return txtCodigo;
+	}
+	public void setTxtCodigo(JTextField txtCodigo) {
+		this.txtCodigo = txtCodigo;
+	}
+	public JTextField getTxtNombre() {
+		return txtNombre;
+	}
+	public void setTxtNombre(JTextField txtNombre) {
+		this.txtNombre = txtNombre;
+	}
+	public JTextField getTxtApellido() {
+		return txtApellido;
+	}
+	public void setTxtApellido(JTextField txtApellido) {
+		this.txtApellido = txtApellido;
+	}
+	public JButton getBtnBuscar() {
+		return btnBuscar;
+	}
+	public void setBtnBuscar(JButton btnBuscar) {
+		this.btnBuscar = btnBuscar;
+	}
+	public JButton getBtnLimpiar() {
+		return btnLimpiar;
+	}
+	public void setBtnLimpiar(JButton btnLimpiar) {
+		this.btnLimpiar = btnLimpiar;
+	}
+	public JTextField getTxtBuscarEstudiante() {
+		return txtBuscarEstudiante;
+	}
+	public void setTxtBuscarEstudiante(JTextField txtBuscarEstudiante) {
+		this.txtBuscarEstudiante = txtBuscarEstudiante;
+	}
+	public JButton getBtnEliminar() {
+		return btnEliminar;
+	}
+	public void setBtnEliminar(JButton btnEliminar) {
+		this.btnEliminar = btnEliminar;
+	}
+	public JTextField getTxtCarrera() {
+		return txtCarrera;
+	}
+	public void setTxtCarrera(JTextField txtCarrera) {
+		this.txtCarrera = txtCarrera;
+	}
+	public JTextField getTxtTipo() {
+		return txtTipo;
+	}
+	public void setTxtTipo(JTextField txtTipo) {
+		this.txtTipo = txtTipo;
+	}
+	
+	
 
 }

@@ -4,5 +4,13 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="mysql-connector-java-5.1.47.jar"/>
 	<classpathentry kind="lib" path="jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="reporte/AbsoluteLayout.jar"/>
+	<classpathentry kind="lib" path="reporte/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="reporte/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="reporte/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="reporte/groovy-2.4.5.jar"/>
+	<classpathentry kind="lib" path="reporte/itext-pdfa-5.5.4.jar"/>
+	<classpathentry kind="lib" path="reporte/itextpdf-5.5.4.jar"/>
+	<classpathentry kind="lib" path="reporte/jasperreports-6.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

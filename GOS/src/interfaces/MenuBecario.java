@@ -53,10 +53,10 @@ public class MenuBecario extends JFrame implements ActionListener{
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		
+		Imagen i = new Imagen();
 		JLabel lblBanner = new JLabel("");
 		lblBanner.setBounds(0, 0, 782, 125);
-		ImageIcon imagen = new ImageIcon("C:\\Users\\Carlos\\Desktop\\U\\GOS\\src\\images\\banner.PNG");
+		ImageIcon imagen = new ImageIcon(i.RUTA_IMAGEN);
 		imagen = new ImageIcon(imagen.getImage().getScaledInstance(lblBanner.getWidth(), lblBanner.getHeight(), Image.SCALE_DEFAULT));
 		contentPane.setLayout(null);
 		lblBanner.setIcon(imagen);
@@ -118,6 +118,14 @@ public class MenuBecario extends JFrame implements ActionListener{
 			pe.setVisible(true);
         	pe.setLocationRelativeTo(null);
         	pe.setResizable(false);
+        	this.dispose();
+		}
+		
+		if(btnPrestarSalaProfe == e.getSource()) {
+			PrestarSala ps = new PrestarSala();
+			ps.setVisible(true);
+        	ps.setLocationRelativeTo(null);
+        	ps.setResizable(false);
         	this.dispose();
 		}
 		
