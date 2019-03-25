@@ -128,22 +128,56 @@ public class Equipo {
 		
 		return equipo;
 	}
+	
+	public Modelo_Equipo obtenerEquipoDisponible(String nombreSala) {
+		Modelo_Equipo equipo = null;
+		Connection con = null;
+
+		try {
+
+			con = conexion.getConnection();
+			ps = con.prepareStatement("select e.* from equipo as e\n" + 
+					"inner join SALA as s on e.IDSALA = s.IDSALA\n" + 
+					"left join PRESTAMOEQUIPO as pe on pe.IDEQUIPO = e.IDEQUIPO\n" + 
+					"where s.NOMBRESALA = ?\n" + 
+					"and pe.IDEQUIPO is null\n" + 
+					"limit 1");
+			ps.setString(1, nombreSala);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				equipo = new Modelo_Equipo(
+						rs.getInt("IDEQUIPO"),
+						rs.getString("NOMBREEQUIPO"),
+						rs.getInt("IDSALA")
+						);
+			} else {
+				equipo=null;
+			}
+
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return equipo;
+	}
 
 	public static void main(String[] args) {
 
 		Equipo e = new Equipo();
 		// agregar equipo
-		if (e.crearEquipo(new Modelo_Equipo(0 ,"E03", 2))) {
-			System.out.println("Se registro correctamente");
-		} else {
-			System.out.println("Ocurrió un error");
-		}
+//		if (e.crearEquipo(new Modelo_Equipo(0 ,"E03", 2))) {
+//			System.out.println("Se registro correctamente");
+//		} else {
+//			System.out.println("Ocurrió un error");
+//		}
 		
 //		// buscar equipo
-//		Modelo_Equipo equipo = e.obtenerEquipo("E01",2);
-//		System.out.println("ID: "+equipo.getIDEQUIPO());
-//		System.out.println("Nombre: "+equipo.getNOMBREEQUIPO());
-//		System.out.println("Sala: "+equipo.getIDSALA());
+		Modelo_Equipo equipo = e.obtenerEquipoDisponible("A101");
+		System.out.println("ID: "+equipo.getIDEQUIPO());
+		System.out.println("Nombre: "+equipo.getNOMBREEQUIPO());
+		System.out.println("Sala: "+equipo.getIDSALA());
 		
 		//obtener todas las carreras
 //		ArrayList<Modelo_Equipo> equipos = e.obtenerEquipos(1);

@@ -48,10 +48,10 @@ public class PrestamoEquipo {
 			ps = con.prepareStatement("insert into prestamoequipo (IDUSUARIO, IDEQUIPO, DIAPRESTAMOEQUIPO, HORAINICIO, HORAFIN, DIADEVOLUCIONEQUIPO) values (?,?,?,?,?,?)");
 			ps.setInt(1, prestamo.getIDUSUARIO());
 			ps.setInt(2, prestamo.getIDEQUIPO());
-			ps.setString(3, yearInicio+"-"+monthInicio+"-"+dayOfMonthInicio+"");
+			ps.setString(3, yearInicio+"-"+(monthInicio+1)+"-"+dayOfMonthInicio+"");
 			ps.setString(4, hourOfDayInicio+":"+minuteInicio+":"+secondInicio);
 			ps.setString(5,hourOfDayFin+":"+minuteFin+":"+secondFin);
-			ps.setString(6, yearFin+"-"+monthFin+"-"+dayOfMonthFin+"");
+			ps.setString(6, yearFin+"-"+(monthFin+1)+"-"+dayOfMonthFin+"");
 
 			int res = ps.executeUpdate();
 
@@ -176,6 +176,50 @@ public class PrestamoEquipo {
 		return prestamoEquipo;
 	}
 
+	public boolean prestamoUsuarioExiste(Modelo_Prestamo_Equipo modelo) {
+		Connection con = null;
+		boolean usuarioExiste=false;
+
+		try {
+			// Fecha de inicio prestamo
+			int yearInicio       = modelo.getFECHA_INICIO().get(Calendar.YEAR);
+			int monthInicio     = modelo.getFECHA_INICIO().get(Calendar.MONTH); // Jan = 0, dec = 11
+			int dayOfMonthInicio = modelo.getFECHA_INICIO().get(Calendar.DAY_OF_MONTH);
+			int hourOfDayInicio  = modelo.getFECHA_INICIO().get(Calendar.HOUR_OF_DAY); // 24 hour clock
+			int minuteInicio     = modelo.getFECHA_INICIO().get(Calendar.MINUTE);
+			int secondInicio    = modelo.getFECHA_INICIO().get(Calendar.SECOND);
+			
+			// Fehca de fin prestamo
+			int yearFin       = modelo.getFECHA_FIN().get(Calendar.YEAR);
+			int monthFin     = modelo.getFECHA_FIN().get(Calendar.MONTH); // Jan = 0, dec = 11
+			int dayOfMonthFin = modelo.getFECHA_FIN().get(Calendar.DAY_OF_MONTH);
+			int hourOfDayFin  = modelo.getFECHA_FIN().get(Calendar.HOUR_OF_DAY); // 24 hour clock
+			int minuteFin     = modelo.getFECHA_FIN().get(Calendar.MINUTE);
+			int secondFin    = modelo.getFECHA_FIN().get(Calendar.SECOND);
+			
+			con = conexion.getConnection();
+			ps = con.prepareStatement("SELECT pe.* FROM prestamoequipo as pe\n" + 
+					"WHERE pe.DIAPRESTAMOEQUIPO = ?\n" + 
+					"AND pe.HORAINICIO = ?\n" + 
+					"AND pe.IDUSUARIO = ?");
+			ps.setString(1, yearInicio+"-"+(monthInicio+1)+"-"+dayOfMonthInicio+"");
+			ps.setString(2, hourOfDayInicio+":"+minuteInicio+":"+secondInicio);
+			ps.setInt(3, modelo.getIDUSUARIO());
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				usuarioExiste=true;
+			} else {
+				usuarioExiste=false;
+			}
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return usuarioExiste;
+	}
+	
 	public static void main(String[] args) {
 
 		PrestamoEquipo pe = new PrestamoEquipo();
