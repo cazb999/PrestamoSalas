@@ -20,7 +20,6 @@ public class MenuBecario extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
 	private JButton btnPrestarSalaProfe;
-	private JButton btnDevolverSalaProfe;
 	private JButton btnSalir;
 	private JButton btnDevolverEquipo;
 	private JButton btnPrestarEquipo;
@@ -63,18 +62,11 @@ public class MenuBecario extends JFrame implements ActionListener{
 		contentPane.add(lblBanner);
 		
 		btnPrestarSalaProfe = new JButton("Prestar Sala");
-		btnPrestarSalaProfe.setBounds(500, 227, 150, 35);
+		btnPrestarSalaProfe.setBounds(506, 260, 150, 35);
 		btnPrestarSalaProfe.setBackground(Color.BLACK);
 		btnPrestarSalaProfe.setForeground(Color.WHITE);
 		btnPrestarSalaProfe.setFont(new Font("Arial", Font.PLAIN, 15));
 		contentPane.add(btnPrestarSalaProfe);
-		
-		btnDevolverSalaProfe = new JButton("Devolver Sala");
-		btnDevolverSalaProfe.setBounds(500, 303, 150, 35);
-		btnDevolverSalaProfe.setForeground(Color.WHITE);
-		btnDevolverSalaProfe.setBackground(Color.BLACK);
-		btnDevolverSalaProfe.setFont(new Font("Arial", Font.PLAIN, 15));
-		contentPane.add(btnDevolverSalaProfe);
 		
 		btnSalir = new JButton("Salir");
 		btnSalir.setBounds(346, 394, 100, 30);
@@ -104,7 +96,6 @@ public class MenuBecario extends JFrame implements ActionListener{
 		contentPane.add(lblGestionDePrestamos);
 		
 		btnDevolverEquipo.addActionListener(this);
-		btnDevolverSalaProfe.addActionListener(this);
 		btnPrestarEquipo.addActionListener(this);
 		btnPrestarSalaProfe.addActionListener(this);
 		btnSalir.addActionListener(this);
