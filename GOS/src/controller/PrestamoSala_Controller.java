@@ -3,6 +3,8 @@ package controller;
 import java.awt.Checkbox;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,22 +28,33 @@ import models.Modelo_Prestamo_Sala;
 import models.Modelo_Sala;
 import models.Modelo_Usuario;
 
-public class PrestamoSala_Controller implements ActionListener{
+public class PrestamoSala_Controller implements ActionListener, MouseListener{
 
 	private PrestamoSala prestamoSala;
 	private Usuario usuario;
 	private PrestarSala prestarSala;
 	private Sala sala;
 
-	private Object[][] data = { { "7 - 8", null, null, null, null, null, null },
-			{ "8 - 9", null, null, null, null, null, null }, { "9 - 10", null, null, null, null, null, null },
-			{ "10 - 11", null, null, null, null, null, null }, { "11 - 12", null, null, null, null, null, null },
-			{ "12 - 13", null, null, null, null, null, null }, { "13 - 14", null, null, null, null, null, null },
-			{ "14 - 15", null, null, null, null, null, null }, { "15 - 16", null, null, null, null, null, null },
-			{ "16 - 17", null, null, null, null, null, null }, { "17 - 18", null, null, null, null, null, null },
-			{ "18 - 19", null, null, null, null, null, null }, { "19 - 20", null, null, null, null, null, null },
-			{ "20 - 21", null, null, null, null, null, null }, { "21 - 22", null, null, null, null, null, null }, };
+	Object[][] data = {
+			{"7 - 8", "", "", "", "", "", ""},
+			{"8 - 9", "", "", "", "", "", ""},
+			{"9 - 10", "", "", "", "", "", ""},
+			{"10 - 11", "", "", "", "", "", ""},
+			{"11 - 12", "", "", "", "", "", ""},
+			{"12 - 13", "", "", "", "", "", ""},
+			{"13 - 14", "", "", "", "", "", ""},
+			{"14 - 15", "", "", "", "", "", ""},
+			{"15 - 16", "", "", "", "", "", ""},
+			{"16 - 17", "", "", "", "", "", ""},
+			{"17 - 18", "", "", "", "", "", ""},
+			{"18 - 19", "", "", "", "", "", ""},
+			{"19 - 20", "", "", "", "", "", ""},
+			{"20 - 21", "", "", "", "", "", ""},
+			{"21 - 22", "", "", "", "", "", ""},
+		};
 	private String[] columnas = { "Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" };
+	
+	ArrayList<Calendar> fechasSemana = new ArrayList<Calendar>();
 
 	public PrestamoSala_Controller(PrestarSala prestarSala) {
 		this.prestamoSala = new PrestamoSala();
@@ -115,8 +128,8 @@ public class PrestamoSala_Controller implements ActionListener{
 			domingo.setTime(fehcaSeleccionada);
 
 			if (this.prestarSala.getCbxSalas().getSelectedIndex() > 0) {
-
-				ArrayList<Calendar> fechasSemana = new ArrayList<Calendar>();
+				
+				fechasSemana = new ArrayList<Calendar>();
 				Calendar hoy =new GregorianCalendar();
 				hoy.setTime(fehcaSeleccionada);
 				switch (hoy.get(Calendar.DAY_OF_WEEK)) {
@@ -248,29 +261,95 @@ public class PrestamoSala_Controller implements ActionListener{
 							prestamosHoy.get(j).getFECHA_FIN().add(Calendar.HOUR_OF_DAY, 12);
 						}
 					}
+					
 					// este for llena las casillas de la tabla
 					for (int j = 0; j < prestamosHoy.size(); j++) {
+						
 						for (int j2 = 7; j2 <= 22; j2++) {
-							if (Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) == j2) {
-								for (int k = j2; k < Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_FIN().getTime())); k++) {
-									this.prestarSala.getTableHorarios().setValueAt("XXXXX", (k - 7), i);
-									
-								}
+							if (Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) == j2) {								
+									this.prestarSala.getTableHorarios().setValueAt("Prestada", (j2 - 7), i);								
 							}
 						}
 					}
 				}
+			}else {
+				JOptionPane.showMessageDialog(null, "Por favor, Seleccione una sala");
 			}
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
 		
-		if(e.getSource() == this.prestarSala.getBtnPrestar()) {
-			int rowIndex = this.prestarSala.getTableHorarios().getSelectedRow();
-			int colIndex = this.prestarSala.getTableHorarios().getSelectedColumn();
-//			if(this.prestarSala.getTableHorarios().getValueAt(rowIndex, colIndex).equals("Disponible")) {
-//				System.out.println("Si");
-//			}
-			System.out.println("Fila y columna seleccionada ->");			
-			System.out.println(rowIndex+"-"+colIndex);
+		int fila = this.prestarSala.getTableHorarios().getSelectedRow();
+		int columna = this.prestarSala.getTableHorarios().getSelectedColumn();
+		
+		TableModel model = this.prestarSala.getTableHorarios().getModel();
+		String valorCelda = model.getValueAt(fila, columna).toString();
+		if(valorCelda.equals("")) {
+			
+			SimpleDateFormat sdf_full = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			SimpleDateFormat sdf_Date = new SimpleDateFormat("yyyy-MM-dd");
+			
+			try {
+				
+				//Obtener las fechas y parsearlas
+				Date date_inicio = sdf_full.parse(sdf_Date.format(fechasSemana.get(columna).getTime())+" "+(fila+7)+":00:00");
+				Date date_fin = sdf_full.parse(sdf_Date.format(fechasSemana.get(columna).getTime())+" "+(fila+7)+":00:00");
+				
+				Calendar calendar_inicio = Calendar.getInstance();
+				calendar_inicio.setTime(date_inicio);
+				
+				Calendar calendar_fin = Calendar.getInstance();
+				calendar_fin.setTime(date_fin);
+				
+				//Obtener sala
+				Sala sale = new Sala();
+				Modelo_Sala s = sale.obtenerSala(this.prestarSala.getCbxSalas().getSelectedItem().toString());
+				
+				//Obtener usuario
+				Usuario user = new Usuario();
+				Modelo_Usuario u = user.obtenerUsuario(Integer.parseInt(this.prestarSala.getTxtUsuario().getText()));
+				
+				//Crear Prestamo
+				Modelo_Prestamo_Sala modelo_prestamo = new Modelo_Prestamo_Sala(0, calendar_inicio, calendar_fin, u.getIDUSUARIO(), s.getIDSALA());
+				if(this.prestamoSala.crearPrestamoSala(modelo_prestamo)) {
+					JOptionPane.showMessageDialog(null, "Prestamo efectuado con exito para:\n"+u.getNOMBREUSUARIO());
+				}
+				
+				
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			
+		} else if(valorCelda.equals("Prestada")) {
+			
 		}
+		
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

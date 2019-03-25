@@ -1,6 +1,5 @@
 package interfaces;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -19,9 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controller.PrestamoEquipo_Controller;
 import controller.PrestamoSala_Controller;
-import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JCalendar;
 
 public class PrestarSala extends JFrame {
@@ -183,22 +180,22 @@ public class PrestarSala extends JFrame {
 		contentPane.add(btnCancelar);
 		
 		Object[][] data = {
-			{"7 - 8", null, null, null, null, null, null},
-			{"8 - 9", null, null, null, null, null, null},
-			{"9 - 10", null, null, null, null, null, null},
-			{"10 - 11", null, null, null, null, null, null},
-			{"11 - 12", null, null, null, null, null, null},
-			{"12 - 13", null, null, null, null, null, null},
-			{"13 - 14", null, null, null, null, null, null},
-			{"14 - 15", null, null, null, null, null, null},
-			{"15 - 16", null, null, null, null, null, null},
-			{"16 - 17", null, null, null, null, null, null},
-			{"17 - 18", null, null, null, null, null, null},
-			{"18 - 19", null, null, null, null, null, null},
-			{"19 - 20", null, null, null, null, null, null},
-			{"20 - 21", null, null, null, null, null, null},
-			{"21 - 22", null, null, null, null, null, null},
-		};
+				{"7 - 8", "", "", "", "", "", ""},
+				{"8 - 9", "", "", "", "", "", ""},
+				{"9 - 10", "", "", "", "", "", ""},
+				{"10 - 11", "", "", "", "", "", ""},
+				{"11 - 12", "", "", "", "", "", ""},
+				{"12 - 13", "", "", "", "", "", ""},
+				{"13 - 14", "", "", "", "", "", ""},
+				{"14 - 15", "", "", "", "", "", ""},
+				{"15 - 16", "", "", "", "", "", ""},
+				{"16 - 17", "", "", "", "", "", ""},
+				{"17 - 18", "", "", "", "", "", ""},
+				{"18 - 19", "", "", "", "", "", ""},
+				{"19 - 20", "", "", "", "", "", ""},
+				{"20 - 21", "", "", "", "", "", ""},
+				{"21 - 22", "", "", "", "", "", ""},
+			};
 		String[] columnas = {"Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
 		DefaultTableModel dtm= new DefaultTableModel(data, columnas);
 		
@@ -222,10 +219,12 @@ public class PrestarSala extends JFrame {
 		btnDisponibilidad.setEnabled(false);
 		contentPane.add(btnDisponibilidad);
 		
-		btnBuscarUsuario.addActionListener(new PrestamoSala_Controller(this));
-		btnCancelar.addActionListener(new PrestamoSala_Controller(this));
-		btnPrestar.addActionListener(new PrestamoSala_Controller(this));
-		btnDisponibilidad.addActionListener(new PrestamoSala_Controller(this));
+		PrestamoSala_Controller prestamo = new PrestamoSala_Controller(this);
+		btnBuscarUsuario.addActionListener(prestamo);
+		btnCancelar.addActionListener(prestamo);
+		btnPrestar.addActionListener(prestamo);
+		btnDisponibilidad.addActionListener(prestamo);
+		tableHorarios.addMouseListener(prestamo);
 	}
 
 	public JTextField getTxtUsuario() {
