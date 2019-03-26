@@ -39,14 +39,14 @@ public class PrestamoEquipo_Controller implements ActionListener, MouseListener 
 	private PrestarEquipo prestarEquipo;
 	private Sala sala;
 
-	Object[][] data = { { "07:00 am - 08:00 am", "", "", "", "", "", "" }, { "08:00 am - 09:00 am", "", "", "", "", "", "" },
-			{ "09:00 am - 10:00 am", "", "", "", "", "", "" }, { "10:00 am - 11:00 am", "", "", "", "", "", "" },
-			{ "11:00 am - 12:00 m", "", "", "", "", "", "" }, { "12:00 m - 01:00 pm", "", "", "", "", "", "" },
-			{ "01:00 pm - 02:00 pm", "", "", "", "", "", "" }, { "02:00 pm - 03:00 pm", "", "", "", "", "", "" },
-			{ "03:00 pm - 04:00 pm", "", "", "", "", "", "" }, { "04:00 pm - 05:00 pm", "", "", "", "", "", "" },
-			{ "05:00 pm - 06:00 pm", "", "", "", "", "", "" }, { "06:00 pm - 07:00 pm", "", "", "", "", "", "" },
-			{ "07:00 pm - 08:00 pm", "", "", "", "", "", "" }, { "08:00 pm - 09:00 pm", "", "", "", "", "", "" },
-			{ "09:00 pm - 10:00 pm", "", "", "", "", "", "" }, };
+	Object[][] data = { { "07:00 am - 08:00 am", "", "", "", "", "", "" },
+			{ "08:00 am - 09:00 am", "", "", "", "", "", "" }, { "09:00 am - 10:00 am", "", "", "", "", "", "" },
+			{ "10:00 am - 11:00 am", "", "", "", "", "", "" }, { "11:00 am - 12:00 m", "", "", "", "", "", "" },
+			{ "12:00 m - 01:00 pm", "", "", "", "", "", "" }, { "01:00 pm - 02:00 pm", "", "", "", "", "", "" },
+			{ "02:00 pm - 03:00 pm", "", "", "", "", "", "" }, { "03:00 pm - 04:00 pm", "", "", "", "", "", "" },
+			{ "04:00 pm - 05:00 pm", "", "", "", "", "", "" }, { "05:00 pm - 06:00 pm", "", "", "", "", "", "" },
+			{ "06:00 pm - 07:00 pm", "", "", "", "", "", "" }, { "07:00 pm - 08:00 pm", "", "", "", "", "", "" },
+			{ "08:00 pm - 09:00 pm", "", "", "", "", "", "" }, { "09:00 pm - 10:00 pm", "", "", "", "", "", "" }, };
 	private String[] columnas = { "Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" };
 
 	ArrayList<Calendar> fechasSemana = new ArrayList<Calendar>();
@@ -105,17 +105,18 @@ public class PrestamoEquipo_Controller implements ActionListener, MouseListener 
 
 		if (this.prestarEquipo.getBtnDisponibilidad() == e.getSource()) {
 			llenarTabla();
+			this.prestarEquipo.getBtnDevolver().setEnabled(true);
 		}
-		
-		if(this.prestarEquipo.getBtnRegresar() == e.getSource()) {
+
+		if (this.prestarEquipo.getBtnRegresar() == e.getSource()) {
 			MenuBecario mb = new MenuBecario();
 			mb.setVisible(true);
 			mb.setLocationRelativeTo(null);
 			mb.setResizable(false);
 			this.prestarEquipo.dispose();
 		}
-		
-		if(e.getSource() == this.prestarEquipo.getBtnCambiarUsuario()) {
+
+		if (e.getSource() == this.prestarEquipo.getBtnCambiarUsuario()) {
 			this.prestarEquipo.getTxtUsuario().setEnabled(true);
 			this.prestarEquipo.getTxtUsuario().setText("");
 			this.prestarEquipo.getCbxSalas().setEnabled(false);
@@ -128,6 +129,17 @@ public class PrestamoEquipo_Controller implements ActionListener, MouseListener 
 			this.prestarEquipo.getLblCorreo().setText("");
 			this.prestarEquipo.getLblNombre().setText("");
 			this.prestarEquipo.getLblTipo().setText("");
+		}
+		
+		if(e.getSource() == this.prestarEquipo.getBtnDevolver()) {
+			Usuario u = new Usuario();
+			Modelo_Usuario user = u.obtenerUsuario(Integer.parseInt(this.prestarEquipo.getTxtUsuario().getText()));
+			PrestamoEquipo p = new PrestamoEquipo();
+			if(p.finalizarPrestamoUsuario(user.getIDUSUARIO(), this.prestarEquipo.getCbxSalas().getSelectedItem().toString())) {
+				JOptionPane.showMessageDialog(null, "Prestamo finalizado con exito!");
+			}else {
+				JOptionPane.showMessageDialog(null, "El usuario no tiene prestamo por finalizar!");
+			}
 		}
 	}
 
@@ -143,27 +155,34 @@ public class PrestamoEquipo_Controller implements ActionListener, MouseListener 
 			JOptionPane.showMessageDialog(null, "Para prestar un equipo primero debe apartar la sala!");
 
 		} else if (valorCelda.equals("Prestada")) {
-			int input = JOptionPane.showConfirmDialog(null, "¿Desea prestar un equipo a\n"+ this.prestarEquipo.getLblNombre().getText() + " " + this.prestarEquipo.getLblApellido().getText()+"\nEn la sala "+this.prestarEquipo.getCbxSalas().getSelectedItem()+"?");
-			if(input == 0) {
+			int input = JOptionPane.showConfirmDialog(null,
+					"¿Desea prestar un equipo a\n" + this.prestarEquipo.getLblNombre().getText() + " "
+							+ this.prestarEquipo.getLblApellido().getText() + "\nEn la sala "
+							+ this.prestarEquipo.getCbxSalas().getSelectedItem() + "?");
+			if (input == 0) {
 				Equipo equipo = new Equipo();
-				if(equipo.obtenerEquipoDisponible(this.prestarEquipo.getCbxSalas().getSelectedItem().toString()) != null) {
+
+				try {
+					// Obtener las fechas y parsearlas
 					SimpleDateFormat sdf_full = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 					SimpleDateFormat sdf_Date = new SimpleDateFormat("yyyy-MM-dd");
+					Date date_inicio = sdf_full
+							.parse(sdf_Date.format(fechasSemana.get(columna).getTime()) + " " + (fila + 7) + ":00:00");
+					Date date_fin = sdf_full
+							.parse(sdf_Date.format(fechasSemana.get(columna).getTime()) + " " + (fila + 7) + ":00:00");
 
-					try {
+					Calendar calendar_inicio = Calendar.getInstance();
+					calendar_inicio.setTime(date_inicio);
 
-						// Obtener las fechas y parsearlas
-						Date date_inicio = sdf_full.parse(sdf_Date.format(fechasSemana.get(columna).getTime()) + " " + (fila + 7) + ":00:00");
-						Date date_fin = sdf_full.parse(sdf_Date.format(fechasSemana.get(columna).getTime()) + " " + (fila + 7) + ":00:00");
+					Calendar calendar_fin = Calendar.getInstance();
+					calendar_fin.setTime(date_fin);
 
-						Calendar calendar_inicio = Calendar.getInstance();
-						calendar_inicio.setTime(date_inicio);
-
-						Calendar calendar_fin = Calendar.getInstance();
-						calendar_fin.setTime(date_fin);
+					if (equipo.obtenerEquipoDisponible(this.prestarEquipo.getCbxSalas().getSelectedItem().toString(),
+							calendar_inicio) != null) {
 
 						// Obtener Equipo
-						Modelo_Equipo modelo_equipo = equipo.obtenerEquipoDisponible(this.prestarEquipo.getCbxSalas().getSelectedItem().toString());
+						Modelo_Equipo modelo_equipo = equipo.obtenerEquipoDisponible(
+								this.prestarEquipo.getCbxSalas().getSelectedItem().toString(), calendar_inicio);
 
 						// Obtener usuario
 						Usuario user = new Usuario();
@@ -171,22 +190,25 @@ public class PrestamoEquipo_Controller implements ActionListener, MouseListener 
 								.obtenerUsuario(Integer.parseInt(this.prestarEquipo.getTxtUsuario().getText()));
 
 						// Crear Prestamo
-						Modelo_Prestamo_Equipo modelo_prestamo = new Modelo_Prestamo_Equipo(0, u.getIDUSUARIO(), modelo_equipo.getIDEQUIPO(), calendar_inicio, calendar_fin);
-						if(!this.prestamoEquipo.prestamoUsuarioExiste(modelo_prestamo)) {
-							if (this.prestamoEquipo.crearPrestamoEquipo(modelo_prestamo)) {
+						Modelo_Prestamo_Equipo modelo_prestamo = new Modelo_Prestamo_Equipo(0, u.getIDUSUARIO(),
+								modelo_equipo.getIDEQUIPO(), calendar_inicio, null);
+						if (!this.prestamoEquipo.prestamoUsuarioExiste(modelo_prestamo)) {
+							if (this.prestamoEquipo.crearPrestamoEquipoInicio(modelo_prestamo)) {
 								llenarTabla();
-								JOptionPane.showMessageDialog(null, "Prestamo de equipo realizado exitosamente");
+								JOptionPane.showMessageDialog(null, "Prestamo de equipo realizado exitosamente!");
+							} else {
+								JOptionPane.showMessageDialog(null, "Ocurrió un error al prestar!");
 							}
-						}else {
-							JOptionPane.showMessageDialog(null, "El usuario "+u.getNOMBREUSUARIO()+" "+u.getAPELLIDOUSUARIO()+"\nTiene un equipo prestado en esta sala!");
+						} else {
+							JOptionPane.showMessageDialog(null, "El usuario " + u.getNOMBREUSUARIO() + " "
+									+ u.getAPELLIDOUSUARIO() + "\nTiene un equipo prestado en esta sala!");
 						}
-						
-
-					} catch (ParseException e1) {
-						e1.printStackTrace();
+					} else {
+						JOptionPane.showMessageDialog(null, "No hay equipos disponibles en esta sala!");
 					}
-				}else {
-					JOptionPane.showMessageDialog(null, "No hay equipos disponibles en esta sala!");
+
+				} catch (ParseException e1) {
+					e1.printStackTrace();
 				}
 			}
 		}
@@ -216,7 +238,7 @@ public class PrestamoEquipo_Controller implements ActionListener, MouseListener 
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	private void llenarTabla() {
 		this.prestarEquipo.getTableHorarios().setModel(new DefaultTableModel(data, columnas));
 
@@ -362,7 +384,8 @@ public class PrestamoEquipo_Controller implements ActionListener, MouseListener 
 			SimpleDateFormat sdf_aux = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 			// este for cambiar la hora 24 por 12
 			for (int i = 0; i < fechasSemana.size(); i++) {
-				ArrayList<Modelo_Prestamo_Sala> prestamosHoy = ps.obtenerPrestamosSalaPorFecha(fechasSemana.get(i), this.prestarEquipo.getCbxSalas().getSelectedItem().toString());
+				ArrayList<Modelo_Prestamo_Sala> prestamosHoy = ps.obtenerPrestamosSalaPorFecha(fechasSemana.get(i),
+						this.prestarEquipo.getCbxSalas().getSelectedItem().toString());
 				for (int j = 0; j < prestamosHoy.size(); j++) {
 					if (Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) == 24) {
 						prestamosHoy.get(j).getFECHA_INICIO().add(Calendar.HOUR_OF_DAY, 12);

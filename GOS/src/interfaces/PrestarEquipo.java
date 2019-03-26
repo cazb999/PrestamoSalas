@@ -40,6 +40,7 @@ public class PrestarEquipo extends JFrame {
 	private JComboBox cbxSalas;
 	private JCalendar dateDia;
 	private JButton btnDisponibilidad;
+	private JButton btnDevolver;
 
 	/**
 	 * Launch the application.
@@ -214,12 +215,22 @@ public class PrestarEquipo extends JFrame {
 		btnDisponibilidad.setEnabled(false);
 		contentPane.add(btnDisponibilidad);
 		
+		btnDevolver = new JButton("Terminar Prestamo");
+		btnDevolver.setForeground(Color.WHITE);
+		btnDevolver.setFont(new Font("Arial", Font.BOLD, 15));
+		btnDevolver.setEnabled(false);
+		btnDevolver.setBackground(Color.DARK_GRAY);
+		btnDevolver.setBounds(30, 418, 197, 30);
+		btnDevolver.setEnabled(false);
+		contentPane.add(btnDevolver);
+		
 		PrestamoEquipo_Controller prestamo = new PrestamoEquipo_Controller(this);
 		btnBuscarUsuario.addActionListener(prestamo);
 		btnRegresar.addActionListener(prestamo);
 		btnCambiarUsuario.addActionListener(prestamo);
 		btnDisponibilidad.addActionListener(prestamo);
 		tableHorarios.addMouseListener(prestamo);
+		btnDevolver.addActionListener(prestamo);
 	}
 
 	public JTextField getTxtUsuario() {
@@ -325,8 +336,14 @@ public class PrestarEquipo extends JFrame {
 	public void setBtnRegresar(JButton btnRegresar) {
 		this.btnRegresar = btnRegresar;
 	}
-	
-	
+
+	public JButton getBtnDevolver() {
+		return btnDevolver;
+	}
+
+	public void setBtnDevolver(JButton btnDevolver) {
+		this.btnDevolver = btnDevolver;
+	}
 	
 	
 }
