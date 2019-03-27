@@ -129,6 +129,7 @@ public class PrestamoEquipo_Controller implements ActionListener, MouseListener 
 			this.prestarEquipo.getLblCorreo().setText("");
 			this.prestarEquipo.getLblNombre().setText("");
 			this.prestarEquipo.getLblTipo().setText("");
+			this.prestarEquipo.getBtnDevolver().setEnabled(false);
 		}
 		
 		if(e.getSource() == this.prestarEquipo.getBtnDevolver()) {
@@ -154,7 +155,7 @@ public class PrestamoEquipo_Controller implements ActionListener, MouseListener 
 		if (valorCelda.equals("")) {
 			JOptionPane.showMessageDialog(null, "Para prestar un equipo primero debe apartar la sala!");
 
-		} else if (valorCelda.equals("Prestada")) {
+		} else if (valorCelda.equals("Prestada") || valorCelda.equals("Prestamo PC")) {
 			int input = JOptionPane.showConfirmDialog(null,
 					"¿Desea prestar un equipo a\n" + this.prestarEquipo.getLblNombre().getText() + " "
 							+ this.prestarEquipo.getLblApellido().getText() + "\nEn la sala "
@@ -400,7 +401,13 @@ public class PrestamoEquipo_Controller implements ActionListener, MouseListener 
 
 					for (int j2 = 7; j2 <= 22; j2++) {
 						if (Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) == j2) {
-							this.prestarEquipo.getTableHorarios().setValueAt("Prestada", (j2 - 7), i);
+							int pcDisponibles = prestamoSala.contadorPrestamosSala(prestamosHoy.get(j));
+							int pcTotales = prestamoSala.numeroCompuSalas(prestamosHoy.get(j).getIDSALA());
+							if(pcDisponibles != pcTotales) {
+								this.prestarEquipo.getTableHorarios().setValueAt("Prestamo PC", (j2 - 7), i);
+							}else {
+								this.prestarEquipo.getTableHorarios().setValueAt("Prestada", (j2 - 7), i);
+							}
 						}
 					}
 				}

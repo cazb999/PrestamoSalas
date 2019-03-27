@@ -21,6 +21,8 @@ public class TableRenderer extends DefaultTableCellRenderer{
 			this.setBackground(Color.WHITE);
 		}else if(table.getValueAt(row, column).equals("")){
 			this.setBackground(Color.GREEN);
+		}else if(table.getValueAt(row, column).equals("Prestamo PC")) {
+			this.setBackground(Color.ORANGE);
 		}
 		return this;
 	}

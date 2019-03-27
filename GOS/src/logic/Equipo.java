@@ -147,15 +147,14 @@ public class Equipo {
 			con = conexion.getConnection();
 			ps = con.prepareStatement("select e.* from equipo as e\n" + 
 					"inner join SALA as s on e.IDSALA = s.IDSALA\n" + 
-					"inner join PRESTAMOEQUIPO as pe on pe.IDEQUIPO = e.IDEQUIPO\n" + 
 					"where s.NOMBRESALA = ?\n" + 
-					"and pe.IDEQUIPO not in\n" + 
+					"and e.IDEQUIPO not in\n" + 
 					"(select idequipo from prestamoequipo\n" + 
 					"where diaprestamoequipo = ?\n" + 
 					"and HORAINICIO = ?\n" + 
 					"and horafin is null\n" + 
 					"and diadevolucionequipo is null)\n" + 
-					"limit 1");
+					"limit 1;");
 			ps.setString(1, nombreSala);
 			ps.setString(2, yearInicio+"-"+(monthInicio+1)+"-"+dayOfMonthInicio+"");
 			ps.setString(3, hourOfDayInicio+":"+minuteInicio+":"+secondInicio);

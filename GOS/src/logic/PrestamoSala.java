@@ -264,6 +264,109 @@ public class PrestamoSala {
 		}
 		return save;
 	}
+	
+	public boolean eliminarPrestamoSalaConEquipo(Modelo_Prestamo_Sala prestamo) {
+		Connection con = null;
+		boolean save = false;
+
+		try {
+			// Fecha de inicio prestamo
+			int yearInicio       = prestamo.getFECHA_INICIO().get(Calendar.YEAR);
+			int monthInicio     = prestamo.getFECHA_INICIO().get(Calendar.MONTH); // Jan = 0, dec = 11
+			int dayOfMonthInicio = prestamo.getFECHA_INICIO().get(Calendar.DAY_OF_MONTH);
+			int hourOfDayInicio  = prestamo.getFECHA_INICIO().get(Calendar.HOUR_OF_DAY); // 24 hour clock
+			int minuteInicio     = prestamo.getFECHA_INICIO().get(Calendar.MINUTE);
+			int secondInicio    = prestamo.getFECHA_INICIO().get(Calendar.SECOND);
+			
+			con = conexion.getConnection();
+			ps = con.prepareStatement("delete prestamoequipo from prestamoequipo\n" + 
+					"inner join equipo on prestamoequipo.idequipo = equipo.idequipo\n" + 
+					"where equipo.idsala = ?\n" + 
+					"and prestamoequipo.diaprestamoequipo = ?\n" + 
+					"and prestamoequipo.horainicio = ?;");
+			ps.setInt(1, prestamo.getIDSALA());
+			ps.setString(2, yearInicio+"-"+(monthInicio+1)+"-"+dayOfMonthInicio+"");
+			ps.setString(3, hourOfDayInicio+":"+minuteInicio+":"+secondInicio);
+
+			int res = ps.executeUpdate();
+
+			if (res > 0) {
+				save = true;
+			} else {
+				save = false;
+			}
+
+			con.close();
+
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		return save;
+	}
+	
+	public int contadorPrestamosSala(Modelo_Prestamo_Sala prestamo) {
+		Connection con = null;
+		int contador=0;
+
+		try {
+			
+			// Fecha de inicio prestamo
+						int yearInicio       = prestamo.getFECHA_INICIO().get(Calendar.YEAR);
+						int monthInicio     = prestamo.getFECHA_INICIO().get(Calendar.MONTH); // Jan = 0, dec = 11
+						int dayOfMonthInicio = prestamo.getFECHA_INICIO().get(Calendar.DAY_OF_MONTH);
+						int hourOfDayInicio  = prestamo.getFECHA_INICIO().get(Calendar.HOUR_OF_DAY); // 24 hour clock
+						int minuteInicio     = prestamo.getFECHA_INICIO().get(Calendar.MINUTE);
+						int secondInicio    = prestamo.getFECHA_INICIO().get(Calendar.SECOND);
+
+			con = conexion.getConnection();
+			ps = con.prepareStatement("select count(e.idequipo) as contador from equipo as e\n" + 
+					"inner join SALA as s on e.IDSALA = s.IDSALA\n" + 
+					"where s.idsala = ?\n" + 
+					"and e.IDEQUIPO not in\n" + 
+					"(select idequipo from prestamoequipo\n" + 
+					"where diaprestamoequipo = ?\n" + 
+					"and HORAINICIO = ?\n" + 
+					"and horafin is null\n" + 
+					"and diadevolucionequipo is null)");
+			ps.setInt(1, prestamo.getIDSALA());
+			ps.setString(2, yearInicio+"-"+(monthInicio+1)+"-"+dayOfMonthInicio+"");
+			ps.setString(3, hourOfDayInicio+":"+minuteInicio+":"+secondInicio);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				contador = rs.getInt("contador");
+			}
+
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return contador;
+	}
+	
+	public int numeroCompuSalas(int idSala) {
+		Connection con = null;
+		int contador=0;
+
+		try {
+
+			con = conexion.getConnection();
+			ps = con.prepareStatement("select count(idequipo) as contador from equipo where idsala = ?");
+			ps.setInt(1, idSala);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				contador = rs.getInt("contador");
+			}
+
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return contador;
+	}
 
 	public static void main(String[] args) {
 		PrestamoSala ps = new PrestamoSala();

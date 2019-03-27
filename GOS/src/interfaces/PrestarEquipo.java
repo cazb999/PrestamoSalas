@@ -70,6 +70,11 @@ public class PrestarEquipo extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JLabel lblPrestamosDeEquipos = new JLabel("Prestamo de equipos");
+		lblPrestamosDeEquipos.setFont(new Font("Arial", Font.BOLD, 25));
+		lblPrestamosDeEquipos.setBounds(421, 16, 380, 46);
+		contentPane.add(lblPrestamosDeEquipos);
+		
 		Imagen i = new Imagen();
 		JLabel lblBanner = new JLabel("");
 		ImageIcon imagen = new ImageIcon(i.RUTA_IMAGEN);
@@ -344,6 +349,4 @@ public class PrestarEquipo extends JFrame {
 	public void setBtnDevolver(JButton btnDevolver) {
 		this.btnDevolver = btnDevolver;
 	}
-	
-	
 }

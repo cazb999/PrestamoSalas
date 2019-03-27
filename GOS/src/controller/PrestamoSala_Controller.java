@@ -210,10 +210,60 @@ public class PrestamoSala_Controller implements ActionListener, MouseListener {
 					// Crear Prestamo
 					Modelo_Prestamo_Sala modelo_prestamo = new Modelo_Prestamo_Sala(0, calendar_inicio, calendar_fin,
 							u.getIDUSUARIO(), s.getIDSALA());
-					if (this.prestamoSala.eliminarPrestamoSala(modelo_prestamo)) {
-						llenarTabla();
-						JOptionPane.showMessageDialog(null, "Prestamo eliminado exitosamente");
+						if (this.prestamoSala.eliminarPrestamoSala(modelo_prestamo)) {
+							llenarTabla();
+							JOptionPane.showMessageDialog(null, "Prestamo eliminado exitosamente");
+						}else {
+							JOptionPane.showMessageDialog(null, "paila");
+						}
+					
+
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}else if (valorCelda.equals("Prestada") || valorCelda.equals("Prestamo PC")) {
+			int input = JOptionPane.showConfirmDialog(null, "Esta seguro de eliminar este prestamo?");
+			if(input == 0) {
+				SimpleDateFormat sdf_full = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				SimpleDateFormat sdf_Date = new SimpleDateFormat("yyyy-MM-dd");
+
+				try {
+
+					// Obtener las fechas y parsearlas
+					Date date_inicio = sdf_full.parse(sdf_Date.format(fechasSemana.get(columna).getTime()) + " " + (fila + 7) + ":00:00");
+					Date date_fin = sdf_full.parse(sdf_Date.format(fechasSemana.get(columna).getTime()) + " " + (fila + 7) + ":00:00");
+
+					Calendar calendar_inicio = Calendar.getInstance();
+					calendar_inicio.setTime(date_inicio);
+
+					Calendar calendar_fin = Calendar.getInstance();
+					calendar_fin.setTime(date_fin);
+
+					// Obtener sala
+					Sala sale = new Sala();
+					Modelo_Sala s = sale.obtenerSala(this.prestarSala.getCbxSalas().getSelectedItem().toString());
+
+					// Obtener usuario
+					Usuario user = new Usuario();
+					Modelo_Usuario u = user
+							.obtenerUsuario(Integer.parseInt(this.prestarSala.getTxtUsuario().getText()));
+
+					// Crear Prestamo
+					Modelo_Prestamo_Sala modelo_prestamo = new Modelo_Prestamo_Sala(0, calendar_inicio, calendar_fin,
+							u.getIDUSUARIO(), s.getIDSALA());
+					if(this.prestamoSala.eliminarPrestamoSalaConEquipo(modelo_prestamo)) {
+						PrestamoSala ps = new PrestamoSala();
+						if (ps.eliminarPrestamoSala(modelo_prestamo)) {
+							llenarTabla();
+							JOptionPane.showMessageDialog(null, "Prestamo eliminado exitosamente");
+						}else {
+							JOptionPane.showMessageDialog(null, "paila");
+						}
+					}else {
+						JOptionPane.showMessageDialog(null, "paila 1");
 					}
+					
 
 				} catch (ParseException e1) {
 					e1.printStackTrace();
@@ -407,7 +457,13 @@ public class PrestamoSala_Controller implements ActionListener, MouseListener {
 
 					for (int j2 = 7; j2 <= 22; j2++) {
 						if (Integer.parseInt(sdf.format(prestamosHoy.get(j).getFECHA_INICIO().getTime())) == j2) {
-							this.prestarSala.getTableHorarios().setValueAt("Prestada", (j2 - 7), i);
+							int pcDisponibles = prestamoSala.contadorPrestamosSala(prestamosHoy.get(j));
+							int pcTotales = prestamoSala.numeroCompuSalas(prestamosHoy.get(j).getIDSALA());
+							if(pcDisponibles != pcTotales) {
+								this.prestarSala.getTableHorarios().setValueAt("Prestamo PC", (j2 - 7), i);
+							}else {
+								this.prestarSala.getTableHorarios().setValueAt("Prestada", (j2 - 7), i);
+							}
 						}
 					}
 				}
