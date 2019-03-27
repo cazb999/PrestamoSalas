@@ -36,7 +36,7 @@ public class RegistrarUsuario_Controller implements ActionListener {
 				if (tipo >= 3 && contrasena.equals("")) {
 					JOptionPane.showMessageDialog(null, "Por favor, asigne una contraseña");
 				} else {
-					if (tipo == 1 || tipo == 2 || tipo == 4 && carrera == 1) {
+					if ((tipo == 1 || tipo == 2 || tipo == 4) && carrera == 1) {
 						JOptionPane.showMessageDialog(null, "Por favor asigne una carrera al usuario");
 					} else {
 						if (!usuario.usuarioExiste(Integer.parseInt(codigo))) {
