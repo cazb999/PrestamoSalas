@@ -20,9 +20,7 @@ public class MenuBecario extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
 	private JButton btnPrestarSalaProfe;
-	private JButton btnDevolverSalaProfe;
 	private JButton btnSalir;
-	private JButton btnDevolverEquipo;
 	private JButton btnPrestarEquipo;
 	private JLabel lblGestionDePrestamos;
 
@@ -62,19 +60,12 @@ public class MenuBecario extends JFrame implements ActionListener{
 		lblBanner.setIcon(imagen);
 		contentPane.add(lblBanner);
 		
-		btnPrestarSalaProfe = new JButton("Prestar Sala");
-		btnPrestarSalaProfe.setBounds(500, 227, 150, 35);
+		btnPrestarSalaProfe = new JButton("Gestionar Salas");
+		btnPrestarSalaProfe.setBounds(484, 236, 172, 59);
 		btnPrestarSalaProfe.setBackground(Color.BLACK);
 		btnPrestarSalaProfe.setForeground(Color.WHITE);
 		btnPrestarSalaProfe.setFont(new Font("Arial", Font.PLAIN, 15));
 		contentPane.add(btnPrestarSalaProfe);
-		
-		btnDevolverSalaProfe = new JButton("Devolver Sala");
-		btnDevolverSalaProfe.setBounds(500, 303, 150, 35);
-		btnDevolverSalaProfe.setForeground(Color.WHITE);
-		btnDevolverSalaProfe.setBackground(Color.BLACK);
-		btnDevolverSalaProfe.setFont(new Font("Arial", Font.PLAIN, 15));
-		contentPane.add(btnDevolverSalaProfe);
 		
 		btnSalir = new JButton("Salir");
 		btnSalir.setBounds(346, 394, 100, 30);
@@ -83,15 +74,8 @@ public class MenuBecario extends JFrame implements ActionListener{
 		btnSalir.setFont(new Font("Arial", Font.PLAIN, 15));
 		contentPane.add(btnSalir);
 		
-		btnDevolverEquipo = new JButton("Devolver Equipo");
-		btnDevolverEquipo.setBounds(148, 303, 150, 35);
-		btnDevolverEquipo.setForeground(Color.WHITE);
-		btnDevolverEquipo.setFont(new Font("Arial", Font.PLAIN, 15));
-		btnDevolverEquipo.setBackground(Color.BLACK);
-		contentPane.add(btnDevolverEquipo);
-		
-		btnPrestarEquipo = new JButton("Prestar Equipo");
-		btnPrestarEquipo.setBounds(148, 227, 150, 35);
+		btnPrestarEquipo = new JButton("Gestionar Equipos");
+		btnPrestarEquipo.setBounds(147, 236, 195, 59);
 		btnPrestarEquipo.setForeground(Color.WHITE);
 		btnPrestarEquipo.setFont(new Font("Arial", Font.PLAIN, 15));
 		btnPrestarEquipo.setBackground(Color.BLACK);
@@ -102,9 +86,6 @@ public class MenuBecario extends JFrame implements ActionListener{
 		lblGestionDePrestamos.setBounds(10, 147, 760, 34);
 		lblGestionDePrestamos.setFont(new Font("Arial", Font.PLAIN, 30));
 		contentPane.add(lblGestionDePrestamos);
-		
-		btnDevolverEquipo.addActionListener(this);
-		btnDevolverSalaProfe.addActionListener(this);
 		btnPrestarEquipo.addActionListener(this);
 		btnPrestarSalaProfe.addActionListener(this);
 		btnSalir.addActionListener(this);

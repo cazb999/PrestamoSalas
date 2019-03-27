@@ -1,6 +1,5 @@
 package interfaces;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -19,9 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controller.PrestamoEquipo_Controller;
 import controller.PrestamoSala_Controller;
-import com.toedter.calendar.JDateChooser;
+import controller.TableRenderer;
+
 import com.toedter.calendar.JCalendar;
 
 public class PrestarSala extends JFrame {
@@ -35,8 +34,8 @@ public class PrestarSala extends JFrame {
 	private JLabel lblCorreo;
 	private JLabel lblTipo;
 	private JTable tableHorarios;
-	private JButton btnPrestar;
-	private JButton btnCancelar;
+	private JButton btnCambiarUsuario;
+	private JButton btnRegresar;
 	private JComboBox cbxSalas;
 	private JCalendar dateDia;
 	private JButton btnDisponibilidad;
@@ -68,6 +67,11 @@ public class PrestarSala extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		JLabel lblPrestamosDeEquipos = new JLabel("Gesti\u00F3n de salas");
+		lblPrestamosDeEquipos.setFont(new Font("Arial", Font.BOLD, 25));
+		lblPrestamosDeEquipos.setBounds(421, 16, 380, 46);
+		contentPane.add(lblPrestamosDeEquipos);
 		
 		Imagen i = new Imagen();
 		JLabel lblBanner = new JLabel("");
@@ -168,37 +172,28 @@ public class PrestarSala extends JFrame {
 		lblSeleccioneElEquipo.setBounds(421, 265, 158, 25);
 		contentPane.add(lblSeleccioneElEquipo);
 		
-		btnPrestar = new JButton("Prestar");
-		btnPrestar.setForeground(Color.WHITE);
-		btnPrestar.setFont(new Font("Arial", Font.BOLD, 15));
-		btnPrestar.setBackground(Color.DARK_GRAY);
-		btnPrestar.setBounds(693, 748, 97, 30);
-		contentPane.add(btnPrestar);
+		btnCambiarUsuario = new JButton("Cambiar Usuario");
+		btnCambiarUsuario.setForeground(Color.WHITE);
+		btnCambiarUsuario.setFont(new Font("Arial", Font.BOLD, 15));
+		btnCambiarUsuario.setBackground(Color.DARK_GRAY);
+		btnCambiarUsuario.setBounds(736, 748, 174, 30);
+		contentPane.add(btnCambiarUsuario);
 		
-		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setForeground(Color.WHITE);
-		btnCancelar.setFont(new Font("Arial", Font.BOLD, 15));
-		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setBounds(584, 748, 97, 30);
-		contentPane.add(btnCancelar);
+		btnRegresar = new JButton("Regresar");
+		btnRegresar.setForeground(Color.WHITE);
+		btnRegresar.setFont(new Font("Arial", Font.BOLD, 15));
+		btnRegresar.setBackground(Color.DARK_GRAY);
+		btnRegresar.setBounds(606, 748, 115, 30);
+		contentPane.add(btnRegresar);
 		
-		Object[][] data = {
-			{"7 - 8", null, null, null, null, null, null},
-			{"8 - 9", null, null, null, null, null, null},
-			{"9 - 10", null, null, null, null, null, null},
-			{"10 - 11", null, null, null, null, null, null},
-			{"11 - 12", null, null, null, null, null, null},
-			{"12 - 13", null, null, null, null, null, null},
-			{"13 - 14", null, null, null, null, null, null},
-			{"14 - 15", null, null, null, null, null, null},
-			{"15 - 16", null, null, null, null, null, null},
-			{"16 - 17", null, null, null, null, null, null},
-			{"17 - 18", null, null, null, null, null, null},
-			{"18 - 19", null, null, null, null, null, null},
-			{"19 - 20", null, null, null, null, null, null},
-			{"20 - 21", null, null, null, null, null, null},
-			{"21 - 22", null, null, null, null, null, null},
-		};
+		Object[][] data = { { "07:00 am - 08:00 am", "", "", "", "", "", "" }, { "08:00 am - 09:00 am", "", "", "", "", "", "" },
+				{ "09:00 am - 10:00 am", "", "", "", "", "", "" }, { "10:00 am - 11:00 am", "", "", "", "", "", "" },
+				{ "11:00 am - 12:00 m", "", "", "", "", "", "" }, { "12:00 m - 01:00 pm", "", "", "", "", "", "" },
+				{ "01:00 pm - 02:00 pm", "", "", "", "", "", "" }, { "02:00 pm - 03:00 pm", "", "", "", "", "", "" },
+				{ "03:00 pm - 04:00 pm", "", "", "", "", "", "" }, { "04:00 pm - 05:00 pm", "", "", "", "", "", "" },
+				{ "05:00 pm - 06:00 pm", "", "", "", "", "", "" }, { "06:00 pm - 07:00 pm", "", "", "", "", "", "" },
+				{ "07:00 pm - 08:00 pm", "", "", "", "", "", "" }, { "08:00 pm - 09:00 pm", "", "", "", "", "", "" },
+				{ "09:00 pm - 10:00 pm", "", "", "", "", "", "" }, };
 		String[] columnas = {"Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
 		DefaultTableModel dtm= new DefaultTableModel(data, columnas);
 		
@@ -208,6 +203,7 @@ public class PrestarSala extends JFrame {
 		tableHorarios = new JTable(dtm);
 		scrollPane.setViewportView(tableHorarios);
 		tableHorarios.setCellSelectionEnabled(true);
+		tableHorarios.setDefaultRenderer(Object.class, new TableRenderer());
 		
 		dateDia = new JCalendar();
 		dateDia.setBounds(573, 250, 202, 155);
@@ -222,10 +218,12 @@ public class PrestarSala extends JFrame {
 		btnDisponibilidad.setEnabled(false);
 		contentPane.add(btnDisponibilidad);
 		
-		btnBuscarUsuario.addActionListener(new PrestamoSala_Controller(this));
-		btnCancelar.addActionListener(new PrestamoSala_Controller(this));
-		btnPrestar.addActionListener(new PrestamoSala_Controller(this));
-		btnDisponibilidad.addActionListener(new PrestamoSala_Controller(this));
+		PrestamoSala_Controller prestamo = new PrestamoSala_Controller(this);
+		btnBuscarUsuario.addActionListener(prestamo);
+		btnRegresar.addActionListener(prestamo);
+		btnCambiarUsuario.addActionListener(prestamo);
+		btnDisponibilidad.addActionListener(prestamo);
+		tableHorarios.addMouseListener(prestamo);
 	}
 
 	public JTextField getTxtUsuario() {
@@ -300,28 +298,12 @@ public class PrestarSala extends JFrame {
 		this.cbxSalas = cbxSalas;
 	}
 
-	public JButton getBtnCancelar() {
-		return btnCancelar;
-	}
-
-	public void setBtnCancelar(JButton btnCancelar) {
-		this.btnCancelar = btnCancelar;
-	}
-
 	public JCalendar getDateDia() {
 		return dateDia;
 	}
 
 	public void setDateDia(JCalendar dateDia) {
 		this.dateDia = dateDia;
-	}
-
-	public JButton getBtnPrestar() {
-		return btnPrestar;
-	}
-
-	public void setBtnPrestar(JButton btnPrestar) {
-		this.btnPrestar = btnPrestar;
 	}
 
 	public JButton getBtnDisponibilidad() {
@@ -331,6 +313,24 @@ public class PrestarSala extends JFrame {
 	public void setBtnDisponibilidad(JButton btnDisponibilidad) {
 		this.btnDisponibilidad = btnDisponibilidad;
 	}
+
+	public JButton getBtnCambiarUsuario() {
+		return btnCambiarUsuario;
+	}
+
+	public void setBtnCambiarUsuario(JButton btnCambiarUsuario) {
+		this.btnCambiarUsuario = btnCambiarUsuario;
+	}
+
+	public JButton getBtnRegresar() {
+		return btnRegresar;
+	}
+
+	public void setBtnRegresar(JButton btnRegresar) {
+		this.btnRegresar = btnRegresar;
+	}
+	
+	
 	
 	
 }

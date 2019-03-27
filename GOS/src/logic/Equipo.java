@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import models.Modelo_Equipo;
+import models.Modelo_Prestamo_Equipo;
 
 public class Equipo {
 	private Conexion conexion = new Conexion();
@@ -128,23 +130,70 @@ public class Equipo {
 		
 		return equipo;
 	}
+	
+	public Modelo_Equipo obtenerEquipoDisponible(String nombreSala, Calendar inicio) {
+		Modelo_Equipo equipo = null;
+		Connection con = null;
+
+		try {
+			
+			int yearInicio       = inicio.get(Calendar.YEAR);
+			int monthInicio     = inicio.get(Calendar.MONTH); // Jan = 0, dec = 11
+			int dayOfMonthInicio = inicio.get(Calendar.DAY_OF_MONTH);
+			int hourOfDayInicio  = inicio.get(Calendar.HOUR_OF_DAY); // 24 hour clock
+			int minuteInicio     = inicio.get(Calendar.MINUTE);
+			int secondInicio    = inicio.get(Calendar.SECOND);
+
+			con = conexion.getConnection();
+			ps = con.prepareStatement("select e.* from equipo as e\n" + 
+					"inner join SALA as s on e.IDSALA = s.IDSALA\n" + 
+					"where s.NOMBRESALA = ?\n" + 
+					"and e.IDEQUIPO not in\n" + 
+					"(select idequipo from prestamoequipo\n" + 
+					"where diaprestamoequipo = ?\n" + 
+					"and HORAINICIO = ?\n" + 
+					"and horafin is null\n" + 
+					"and diadevolucionequipo is null)\n" + 
+					"limit 1;");
+			ps.setString(1, nombreSala);
+			ps.setString(2, yearInicio+"-"+(monthInicio+1)+"-"+dayOfMonthInicio+"");
+			ps.setString(3, hourOfDayInicio+":"+minuteInicio+":"+secondInicio);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				equipo = new Modelo_Equipo(
+						rs.getInt("IDEQUIPO"),
+						rs.getString("NOMBREEQUIPO"),
+						rs.getInt("IDSALA")
+						);
+			} else {
+				equipo=null;
+			}
+
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return equipo;
+	}
 
 	public static void main(String[] args) {
 
 		Equipo e = new Equipo();
 		// agregar equipo
-		if (e.crearEquipo(new Modelo_Equipo(0 ,"E03", 2))) {
-			System.out.println("Se registro correctamente");
-		} else {
-			System.out.println("Ocurrió un error");
-		}
+//		if (e.crearEquipo(new Modelo_Equipo(0 ,"E03", 2))) {
+//			System.out.println("Se registro correctamente");
+//		} else {
+//			System.out.println("Ocurrió un error");
+//		}
 		
 //		// buscar equipo
-//		Modelo_Equipo equipo = e.obtenerEquipo("E01",2);
+//		Modelo_Equipo equipo = e.obtenerEquipoDisponible("A101");
 //		System.out.println("ID: "+equipo.getIDEQUIPO());
 //		System.out.println("Nombre: "+equipo.getNOMBREEQUIPO());
 //		System.out.println("Sala: "+equipo.getIDSALA());
-		
+//		
 		//obtener todas las carreras
 //		ArrayList<Modelo_Equipo> equipos = e.obtenerEquipos(1);
 //		for (int i = 0; i < equipos.size(); i++) {

@@ -1,27 +1,28 @@
 package interfaces;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Image;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import controller.PrestamoEquipo_Controller;
+import controller.PrestamoSala_Controller;
+import controller.TableRenderer;
 
-import java.awt.Color;
-import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.border.LineBorder;
+import com.toedter.calendar.JCalendar;
 
 public class PrestarEquipo extends JFrame {
 
@@ -34,6 +35,12 @@ public class PrestarEquipo extends JFrame {
 	private JLabel lblCorreo;
 	private JLabel lblTipo;
 	private JTable tableHorarios;
+	private JButton btnCambiarUsuario;
+	private JButton btnRegresar;
+	private JComboBox cbxSalas;
+	private JCalendar dateDia;
+	private JButton btnDisponibilidad;
+	private JButton btnDevolver;
 
 	/**
 	 * Launch the application.
@@ -63,10 +70,15 @@ public class PrestarEquipo extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JLabel lblPrestamosDeEquipos = new JLabel("Gestión de equipos");
+		lblPrestamosDeEquipos.setFont(new Font("Arial", Font.BOLD, 25));
+		lblPrestamosDeEquipos.setBounds(421, 16, 380, 46);
+		contentPane.add(lblPrestamosDeEquipos);
+		
 		Imagen i = new Imagen();
 		JLabel lblBanner = new JLabel("");
 		ImageIcon imagen = new ImageIcon(i.RUTA_IMAGEN);
-		lblBanner.setBounds(0, 0, 850, 125);
+		lblBanner.setBounds(0, 0, 933, 125);
 		imagen = new ImageIcon(imagen.getImage().getScaledInstance(lblBanner.getWidth(), lblBanner.getHeight(), Image.SCALE_DEFAULT));
 		contentPane.setLayout(null);
 		lblBanner.setIcon(imagen);
@@ -77,7 +89,7 @@ public class PrestarEquipo extends JFrame {
 		lblSeleccionarUsuario.setBounds(58, 138, 186, 31);
 		contentPane.add(lblSeleccionarUsuario);
 		
-		JLabel lblSeleccionarEquipo = new JLabel("Seleccionar Equipo");
+		JLabel lblSeleccionarEquipo = new JLabel("Seleccionar Sala");
 		lblSeleccionarEquipo.setFont(new Font("Arial", Font.PLAIN, 20));
 		lblSeleccionarEquipo.setBounds(519, 138, 186, 31);
 		contentPane.add(lblSeleccionarEquipo);
@@ -145,72 +157,85 @@ public class PrestarEquipo extends JFrame {
 		lblTipo.setBounds(126, 346, 101, 16);
 		contentPane.add(lblTipo);
 		
-		JLabel lblSalasDisponibles = new JLabel("Salas Disponibles");
+		JLabel lblSalasDisponibles = new JLabel("Salas");
 		lblSalasDisponibles.setFont(new Font("Arial", Font.BOLD, 15));
-		lblSalasDisponibles.setBounds(421, 198, 140, 25);
+		lblSalasDisponibles.setBounds(421, 198, 56, 25);
 		contentPane.add(lblSalasDisponibles);
 		
-		JComboBox cbxSalas = new JComboBox();
-		cbxSalas.setModel(new DefaultComboBoxModel(new String[] {"Salas"}));
+		cbxSalas = new JComboBox();
+		cbxSalas.setModel(new DefaultComboBoxModel(new String[] {"Seleccione una sala"}));
 		cbxSalas.setSelectedIndex(0);
 		cbxSalas.setBounds(573, 198, 202, 25);
-		cbxSalas.setEditable(false);
+		cbxSalas.setEnabled(false);
 		getContentPane().add(cbxSalas);
 		
-		JLabel lblSeleccioneElEquipo = new JLabel("Seleccione el equipo");
+		JLabel lblSeleccioneElEquipo = new JLabel("Seleccione el d\u00EDa");
 		lblSeleccioneElEquipo.setFont(new Font("Arial", Font.BOLD, 15));
-		lblSeleccioneElEquipo.setBounds(403, 263, 158, 25);
+		lblSeleccioneElEquipo.setBounds(421, 265, 158, 25);
 		contentPane.add(lblSeleccioneElEquipo);
 		
-		JComboBox cbxEquipos = new JComboBox();
-		cbxEquipos.setModel(new DefaultComboBoxModel(new String[] {"Equipo"}));
-		cbxEquipos.setSelectedIndex(0);
-		cbxEquipos.setBounds(573, 263, 202, 25);
-		cbxEquipos.setEditable(false);
-		contentPane.add(cbxEquipos);
+		btnCambiarUsuario = new JButton("Cambiar Usuario");
+		btnCambiarUsuario.setForeground(Color.WHITE);
+		btnCambiarUsuario.setFont(new Font("Arial", Font.BOLD, 15));
+		btnCambiarUsuario.setBackground(Color.DARK_GRAY);
+		btnCambiarUsuario.setBounds(736, 748, 174, 30);
+		contentPane.add(btnCambiarUsuario);
 		
-		JButton btnPrestar = new JButton("Prestar");
-		btnPrestar.setForeground(Color.WHITE);
-		btnPrestar.setFont(new Font("Arial", Font.BOLD, 15));
-		btnPrestar.setBackground(Color.DARK_GRAY);
-		btnPrestar.setBounds(678, 332, 97, 30);
-		contentPane.add(btnPrestar);
+		btnRegresar = new JButton("Regresar");
+		btnRegresar.setForeground(Color.WHITE);
+		btnRegresar.setFont(new Font("Arial", Font.BOLD, 15));
+		btnRegresar.setBackground(Color.DARK_GRAY);
+		btnRegresar.setBounds(606, 748, 115, 30);
+		contentPane.add(btnRegresar);
 		
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setForeground(Color.WHITE);
-		btnCancelar.setFont(new Font("Arial", Font.BOLD, 15));
-		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setBounds(569, 332, 97, 30);
-		contentPane.add(btnCancelar);
-		
-		Object[][] data = {
-			{"7 - 8", null, null, null, null, null, null},
-			{"8 - 9", null, null, null, null, null, null},
-			{"9 - 10", null, null, null, null, null, null},
-			{"10 - 11", null, null, null, null, null, null},
-			{"11 - 12", null, null, null, null, null, null},
-			{"12 - 13", null, null, null, null, null, null},
-			{"13 - 14", null, null, null, null, null, null},
-			{"14 - 15", null, null, null, null, null, null},
-			{"15 - 16", null, null, null, null, null, null},
-			{"16 - 17", null, null, null, null, null, null},
-			{"17 - 18", null, null, null, null, null, null},
-			{"18 - 19", null, null, null, null, null, null},
-			{"19 - 20", null, null, null, null, null, null},
-			{"20 - 21", null, null, null, null, null, null},
-			{"21 - 22", null, null, null, null, null, null},
-		};
+		Object[][] data = { { "07:00 am - 08:00 am", "", "", "", "", "", "" }, { "08:00 am - 09:00 am", "", "", "", "", "", "" },
+				{ "09:00 am - 10:00 am", "", "", "", "", "", "" }, { "10:00 am - 11:00 am", "", "", "", "", "", "" },
+				{ "11:00 am - 12:00 m", "", "", "", "", "", "" }, { "12:00 m - 01:00 pm", "", "", "", "", "", "" },
+				{ "01:00 pm - 02:00 pm", "", "", "", "", "", "" }, { "02:00 pm - 03:00 pm", "", "", "", "", "", "" },
+				{ "03:00 pm - 04:00 pm", "", "", "", "", "", "" }, { "04:00 pm - 05:00 pm", "", "", "", "", "", "" },
+				{ "05:00 pm - 06:00 pm", "", "", "", "", "", "" }, { "06:00 pm - 07:00 pm", "", "", "", "", "", "" },
+				{ "07:00 pm - 08:00 pm", "", "", "", "", "", "" }, { "08:00 pm - 09:00 pm", "", "", "", "", "", "" },
+				{ "09:00 pm - 10:00 pm", "", "", "", "", "", "" }, };
 		String[] columnas = {"Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
 		DefaultTableModel dtm= new DefaultTableModel(data, columnas);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(40, 375, 880, 271);
+		scrollPane.setBounds(30, 464, 880, 271);
 		contentPane.add(scrollPane);
 		tableHorarios = new JTable(dtm);
 		scrollPane.setViewportView(tableHorarios);
 		tableHorarios.setCellSelectionEnabled(true);
+		tableHorarios.setDefaultRenderer(Object.class, new TableRenderer());
 		
-		btnBuscarUsuario.addActionListener(new PrestamoEquipo_Controller(this));
+		dateDia = new JCalendar();
+		dateDia.setBounds(573, 250, 202, 155);
+		dateDia.setEnabled(false);
+		contentPane.add(dateDia);
+		
+		btnDisponibilidad = new JButton("Buscar Disponibilidad");
+		btnDisponibilidad.setForeground(Color.WHITE);
+		btnDisponibilidad.setFont(new Font("Arial", Font.BOLD, 15));
+		btnDisponibilidad.setBackground(Color.DARK_GRAY);
+		btnDisponibilidad.setBounds(573, 421, 202, 30);
+		btnDisponibilidad.setEnabled(false);
+		contentPane.add(btnDisponibilidad);
+		
+		btnDevolver = new JButton("Terminar Prestamo");
+		btnDevolver.setForeground(Color.WHITE);
+		btnDevolver.setFont(new Font("Arial", Font.BOLD, 15));
+		btnDevolver.setEnabled(false);
+		btnDevolver.setBackground(Color.DARK_GRAY);
+		btnDevolver.setBounds(30, 418, 197, 30);
+		btnDevolver.setEnabled(false);
+		contentPane.add(btnDevolver);
+		
+		PrestamoEquipo_Controller prestamo = new PrestamoEquipo_Controller(this);
+		btnBuscarUsuario.addActionListener(prestamo);
+		btnRegresar.addActionListener(prestamo);
+		btnCambiarUsuario.addActionListener(prestamo);
+		btnDisponibilidad.addActionListener(prestamo);
+		tableHorarios.addMouseListener(prestamo);
+		btnDevolver.addActionListener(prestamo);
 	}
 
 	public JTextField getTxtUsuario() {
@@ -267,5 +292,61 @@ public class PrestarEquipo extends JFrame {
 
 	public void setLblTipo(JLabel lblTipo) {
 		this.lblTipo = lblTipo;
+	}
+
+	public JTable getTableHorarios() {
+		return tableHorarios;
+	}
+
+	public void setTableHorarios(JTable tableHorarios) {
+		this.tableHorarios = tableHorarios;
+	}
+
+	public JComboBox getCbxSalas() {
+		return cbxSalas;
+	}
+
+	public void setCbxSalas(JComboBox cbxSalas) {
+		this.cbxSalas = cbxSalas;
+	}
+
+	public JCalendar getDateDia() {
+		return dateDia;
+	}
+
+	public void setDateDia(JCalendar dateDia) {
+		this.dateDia = dateDia;
+	}
+
+	public JButton getBtnDisponibilidad() {
+		return btnDisponibilidad;
+	}
+
+	public void setBtnDisponibilidad(JButton btnDisponibilidad) {
+		this.btnDisponibilidad = btnDisponibilidad;
+	}
+
+	public JButton getBtnCambiarUsuario() {
+		return btnCambiarUsuario;
+	}
+
+	public void setBtnCambiarUsuario(JButton btnCambiarUsuario) {
+		this.btnCambiarUsuario = btnCambiarUsuario;
+	}
+
+	public JButton getBtnRegresar() {
+		return btnRegresar;
+	}
+
+	public void setBtnRegresar(JButton btnRegresar) {
+		this.btnRegresar = btnRegresar;
+	}
+
+	public JButton getBtnDevolver() {
+		return btnDevolver;
+	}
+
+	public void setBtnDevolver(JButton btnDevolver) {
+		this.btnDevolver = btnDevolver;
 	}
 }

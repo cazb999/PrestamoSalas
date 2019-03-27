@@ -83,7 +83,7 @@ public class MenuAdmin extends JFrame implements ActionListener{
 		btnSalir.setBounds(350, 310, 100, 30);
 		contentPane.add(btnSalir);
 		
-		btnHorarioEstadsticas = new JButton("<html><p>Reportes y</p><p>Estad\u00EDsticas</p></html>");
+		btnHorarioEstadsticas = new JButton("<html><p>Estad\u00EDsticas</p></html>");
 		btnHorarioEstadsticas.setForeground(Color.WHITE);
 		btnHorarioEstadsticas.setFont(new Font("Arial", Font.PLAIN, 20));
 		btnHorarioEstadsticas.setBackground(Color.BLACK);
