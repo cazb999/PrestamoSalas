@@ -367,20 +367,49 @@ public class PrestamoSala {
 		
 		return contador;
 	}
+	
+	public ArrayList<String[]> salasMasSolicitadas() {
+		ArrayList<String[]> tipos = new ArrayList<String[]>();
+		Connection con = null;
+
+		try {
+
+			con = conexion.getConnection();
+			ps = con.prepareStatement("select idsala, count(idsala) as veces \n" + 
+					"from prestamosala\n" + 
+					"group by idsala \n" + 
+					"order by 2 desc");
+
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				String[] tipo = new String[2];
+				tipo[0]=rs.getString("idsala");
+				tipo[1]=rs.getString("veces");
+				
+				tipos.add(tipo);
+			}
+
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return tipos;
+	}
 
 	public static void main(String[] args) {
 		PrestamoSala ps = new PrestamoSala();
 		// agregar prestamo equipo
 		// Jan = 0, dec = 11
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd hh:mm:ss");
-		Calendar calendar_inicio = new GregorianCalendar(2019,03,29,8,0,0);
-		Calendar calendar_fin = new GregorianCalendar(2019,03,29,8,0,0);
-		
-		if (ps.eliminarPrestamoSala(new Modelo_Prestamo_Sala(0, calendar_inicio, calendar_fin, 3, 1))) {
-			System.out.println("Se elimino correctamente el prestamo");
-		} else {
-			System.out.println("Ocurrió un error");
-		}
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd hh:mm:ss");
+//		Calendar calendar_inicio = new GregorianCalendar(2019,03,29,8,0,0);
+//		Calendar calendar_fin = new GregorianCalendar(2019,03,29,8,0,0);
+//		
+//		if (ps.eliminarPrestamoSala(new Modelo_Prestamo_Sala(0, calendar_inicio, calendar_fin, 3, 1))) {
+//			System.out.println("Se elimino correctamente el prestamo");
+//		} else {
+//			System.out.println("Ocurrió un error");
+//		}
 		
 //		// buscar Prestamo Equipo
 //		Modelo_Prestamo_Sala prestamo = ps.obtenerPrestamoSala(1);
@@ -389,6 +418,9 @@ public class PrestamoSala {
 //		System.out.println("ID Equipo "+prestamo.getIDSALA());
 //		System.out.println("Fecha inicio "+sdf.format(prestamo.getFECHA_INICIO().getTime()));
 //		System.out.println("fecha fin "+sdf.format(prestamo.getFECHA_FIN().getTime()));
+		
+		
+		
 		
 		//obtener todos los usuarios
 //		Calendar calendario =Calendar.getInstance();

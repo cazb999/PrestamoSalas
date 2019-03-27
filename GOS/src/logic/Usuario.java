@@ -180,6 +180,40 @@ public class Usuario {
 		return usuario;
 	}
 	
+	public Modelo_Usuario obtenerUsuarioID(int idUsuario) {
+		Connection con = null;
+		Modelo_Usuario usuario = null;
+
+		try {
+
+			con = conexion.getConnection();
+			ps = con.prepareStatement("SELECT * FROM usuario WHERE IDUSUARIO = ?");
+			ps.setInt(1, idUsuario);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				usuario = new Modelo_Usuario(
+						rs.getInt("IDUSUARIO"),
+						rs.getInt("IDCARRERA"),
+						rs.getInt("IDTIPO"),
+						rs.getInt("CODIGOUSUARIO"),
+						rs.getString("NOMBREUSUARIO"),
+						rs.getString("APELLIDOUSUARIO"),
+						rs.getString("CORREO"),
+						rs.getString("CONTRASENA")
+						);
+			} else {
+				usuario=null;
+			}
+
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return usuario;
+	}
+	
 	public boolean usuarioExiste(int codigoUsuario) {
 		Connection con = null;
 		boolean usuarioExiste=false;
@@ -203,6 +237,35 @@ public class Usuario {
 		}
 		
 		return usuarioExiste;
+	}
+	
+	public ArrayList<String[]> usuariosMasRecurrentes() {
+		ArrayList<String[]> tipos = new ArrayList<String[]>();
+		Connection con = null;
+
+		try {
+
+			con = conexion.getConnection();
+			ps = con.prepareStatement("select idusuario, count(idusuario) as veces \n" + 
+					"from prestamosala\n" + 
+					"group by idusuario \n" + 
+					"order by 2 desc;");
+
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				String[] tipo = new String[2];
+				tipo[0]=rs.getString("idusuario");
+				tipo[1]=rs.getString("veces");
+				
+				tipos.add(tipo);
+			}
+
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return tipos;
 	}
 
 	public static void main(String[] args) {

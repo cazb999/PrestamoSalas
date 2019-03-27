@@ -5,20 +5,24 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
-public class Reporte_Estadistica extends JFrame {
+import controller.Estadisticas_Controller;
+
+public class Reporte_Estadistica extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
-	
-	private JButton btnVerEstadisticas;
-	private JButton btnReportePrestamos;
 	private JButton btnSalir;
 	private JButton btnRegresar;
 
@@ -60,27 +64,8 @@ public class Reporte_Estadistica extends JFrame {
 		
 		JLabel lblEstadisticas = new JLabel("Estad\u00EDsticas");
 		lblEstadisticas.setFont(new Font("Arial", Font.PLAIN, 30));
-		lblEstadisticas.setBounds(35, 317, 171, 34);
+		lblEstadisticas.setBounds(15, 141, 171, 34);
 		contentPane.add(lblEstadisticas);
-		
-		JLabel lblHorario = new JLabel("Reportes");
-		lblHorario.setFont(new Font("Arial", Font.PLAIN, 30));
-		lblHorario.setBounds(35, 141, 200, 34);
-		contentPane.add(lblHorario);
-		
-		btnVerEstadisticas = new JButton("Ver Estad\u00EDsticas");
-		btnVerEstadisticas.setForeground(Color.WHITE);
-		btnVerEstadisticas.setBackground(Color.BLACK);
-		btnVerEstadisticas.setFont(new Font("Arial", Font.PLAIN, 15));
-		btnVerEstadisticas.setBounds(35, 367, 150, 40);
-		contentPane.add(btnVerEstadisticas);
-		
-		btnReportePrestamos = new JButton("Reporte Prestamos Salas");
-		btnReportePrestamos.setBackground(Color.BLACK);
-		btnReportePrestamos.setForeground(Color.WHITE);
-		btnReportePrestamos.setFont(new Font("Arial", Font.PLAIN, 15));
-		btnReportePrestamos.setBounds(35, 191, 212, 40);
-		contentPane.add(btnReportePrestamos);
 		
 		btnSalir = new JButton("Salir");
 		btnSalir.setForeground(Color.WHITE);
@@ -95,6 +80,59 @@ public class Reporte_Estadistica extends JFrame {
 		btnRegresar.setBackground(Color.GRAY);
 		btnRegresar.setBounds(689, 498, 100, 30);
 		contentPane.add(btnRegresar);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(25, 248, 365, 180);
+		getContentPane().add(scrollPane);
+		
+		Estadisticas_Controller est_1 = new Estadisticas_Controller();
+		JList list = new JList();
+		list.setForeground(Color.DARK_GRAY);
+		scrollPane.setViewportView(list);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setFont(new Font("Arial", Font.PLAIN, 14));
+		est_1.salasMasConsultadas(list);
+		
+		JLabel lblSalasMsConsultadas = new JLabel("Salas m\u00E1s consultadas");
+		lblSalasMsConsultadas.setFont(new Font("Arial", Font.PLAIN, 20));
+		lblSalasMsConsultadas.setBounds(28, 214, 362, 34);
+		contentPane.add(lblSalasMsConsultadas);
+		
+		JLabel lblUsuariosMsRecurrentes = new JLabel("Usuarios m\u00E1s recurrentes");
+		lblUsuariosMsRecurrentes.setFont(new Font("Arial", Font.PLAIN, 20));
+		lblUsuariosMsRecurrentes.setBounds(518, 214, 362, 34);
+		contentPane.add(lblUsuariosMsRecurrentes);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(515, 248, 365, 180);
+		contentPane.add(scrollPane_1);
+		
+		Estadisticas_Controller est_2 = new Estadisticas_Controller();
+		JList list_1 = new JList();
+		list_1.setForeground(Color.DARK_GRAY);
+		scrollPane_1.setViewportView(list_1);
+		list_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list_1.setFont(new Font("Arial", Font.PLAIN, 14));
+		est_2.usuariosMasRecurrentes(list_1);
+		
+		btnRegresar.addActionListener(this);
+		btnSalir.addActionListener(this);
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource() == btnRegresar) {
+			MenuAdmin ma = new MenuAdmin();
+			ma.setVisible(true);
+			ma.setLocationRelativeTo(null);
+			ma.setResizable(false);
+			this.dispose();
+		}
+		
+		if(e.getSource() == btnSalir) {
+			this.dispose();
+		}
+		
+	}
 }

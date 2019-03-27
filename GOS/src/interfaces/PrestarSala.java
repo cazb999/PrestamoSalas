@@ -68,6 +68,11 @@ public class PrestarSala extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JLabel lblPrestamosDeEquipos = new JLabel("Gesti\u00F3n de salas");
+		lblPrestamosDeEquipos.setFont(new Font("Arial", Font.BOLD, 25));
+		lblPrestamosDeEquipos.setBounds(421, 16, 380, 46);
+		contentPane.add(lblPrestamosDeEquipos);
+		
 		Imagen i = new Imagen();
 		JLabel lblBanner = new JLabel("");
 		ImageIcon imagen = new ImageIcon(i.RUTA_IMAGEN);

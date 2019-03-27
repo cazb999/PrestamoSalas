@@ -70,7 +70,7 @@ public class PrestarEquipo extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblPrestamosDeEquipos = new JLabel("Prestamo de equipos");
+		JLabel lblPrestamosDeEquipos = new JLabel("Gestión de equipos");
 		lblPrestamosDeEquipos.setFont(new Font("Arial", Font.BOLD, 25));
 		lblPrestamosDeEquipos.setBounds(421, 16, 380, 46);
 		contentPane.add(lblPrestamosDeEquipos);

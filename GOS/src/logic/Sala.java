@@ -126,6 +126,35 @@ public class Sala {
 		return sala;
 	}
 	
+	public Modelo_Sala obtenerSalaID(int idSala) {
+		Modelo_Sala sala = null;
+		Connection con = null;
+
+		try {
+
+			con = conexion.getConnection();
+			ps = con.prepareStatement("SELECT * FROM sala WHERE IDSALA = ?");
+			ps.setInt(1, idSala);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				sala = new Modelo_Sala(
+						rs.getInt("IDSALA"),
+						rs.getString("NOMBRESALA"),
+						rs.getInt("CAPACIDADSALA")
+						);
+			} else {
+				sala=null;
+			}
+
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		
+		return sala;
+	}
+	
 	public boolean salaExiste(String nombreSala) {
 		Connection con = null;
 		boolean usuarioExiste=false;
